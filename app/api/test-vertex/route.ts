@@ -37,13 +37,15 @@ export async function GET() {
     });
   } catch (error) {
     console.error('Vertex AI test error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+    const errorStack = error instanceof Error ? error.stack : undefined;
     return NextResponse.json({
       success: false,
       configured: true,
-      error: error.message,
+      error: errorMessage,
       projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
       location: process.env.VERTEX_AI_LOCATION || 'us-central1',
-      details: error.stack
+      details: errorStack
     }, { status: 500 });
   }
 }

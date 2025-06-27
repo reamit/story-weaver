@@ -47,8 +47,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ images: finalImages });
   } catch (error) {
     console.error('Vertex AI error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
     return NextResponse.json(
-      { error: `Failed to generate images: ${error.message}` },
+      { error: `Failed to generate images: ${errorMessage}` },
       { status: 500 }
     );
   }
