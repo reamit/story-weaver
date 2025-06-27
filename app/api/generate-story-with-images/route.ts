@@ -55,12 +55,10 @@ Image 6: [brief visual description for illustration]
     const imageMatches = content.match(/Image \d+: (.+)/g) || [];
     const imagePrompts = imageMatches.map(match => match.replace(/Image \d+: /, '').trim());
 
-    // Generate images based on available provider
+    // Generate images using Google Vertex AI
     let images: string[] = [];
-    const useVertexAI = process.env.USE_VERTEX_AI === 'true';
     
-    if (useVertexAI && process.env.GOOGLE_CLOUD_PROJECT_ID) {
-      // Use Google Vertex AI
+    if (process.env.GOOGLE_CLOUD_PROJECT_ID) {
       try {
         const imageResponse = await fetch(`${req.headers.get('origin')}/api/generate-images-vertex`, {
           method: 'POST',
@@ -77,48 +75,35 @@ Image 6: [brief visual description for illustration]
         } else {
           const errorData = await imageResponse.json();
           console.error('Vertex AI image generation failed:', errorData);
+          throw new Error(errorData.error || 'Failed to generate images');
         }
       } catch (error) {
         console.error('Failed to generate images with Vertex AI:', error);
-        // Try fallback to Together AI if available
-        if (process.env.TOGETHER_API_KEY) {
-          console.log('Falling back to Together AI...');
-        }
-      }
-    }
-    
-    // Use Together AI if Vertex AI is not used or failed
-    if (images.length === 0 && process.env.TOGETHER_API_KEY) {
-      try {
-        const imageResponse = await fetch(`${req.headers.get('origin')}/api/generate-images`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            prompts: imagePrompts,
-            character,
-            style: 'cartoon'
-          })
+        // Return story without images but include error info
+        return Response.json({
+          title,
+          pages,
+          imagePrompts,
+          images: [],
+          character,
+          genre,
+          age,
+          imageError: 'Failed to generate images. Please check Vertex AI configuration.'
         });
-
-        if (imageResponse.ok) {
-          const imageData = await imageResponse.json();
-          images = imageData.images || [];
-        }
-      } catch (error) {
-        console.error('Failed to generate images with Together AI:', error);
-        // Continue without images
       }
+    } else {
+      // No image provider configured
+      return Response.json({
+        title,
+        pages,
+        imagePrompts,
+        images: [],
+        character,
+        genre,
+        age,
+        imageError: 'Google Vertex AI not configured. Please set up GOOGLE_CLOUD_PROJECT_ID and credentials.'
+      });
     }
-
-    // Add debug information about image generation
-    const imageGenerationStatus = {
-      attempted: true, // This endpoint is specifically for images
-      vertexAIEnabled: useVertexAI,
-      vertexAIConfigured: !!(process.env.GOOGLE_CLOUD_PROJECT_ID && process.env.GOOGLE_APPLICATION_CREDENTIALS),
-      togetherAIConfigured: !!process.env.TOGETHER_API_KEY,
-      imagesGenerated: images.length,
-      expectedImages: imagePrompts.length
-    };
 
     return Response.json({
       title,
@@ -127,8 +112,7 @@ Image 6: [brief visual description for illustration]
       images,
       character,
       genre,
-      age,
-      debug: process.env.NODE_ENV === 'development' ? imageGenerationStatus : undefined
+      age
     });
   } catch (error: any) {
     console.error('Story generation error:', error);

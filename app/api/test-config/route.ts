@@ -8,15 +8,11 @@ export async function GET() {
       keyLength: process.env.GROQ_API_KEY?.length || 0,
       keyPrefix: process.env.GROQ_API_KEY?.substring(0, 8) || 'not set'
     },
-    togetherAI: {
-      configured: !!process.env.TOGETHER_API_KEY,
-      keyLength: process.env.TOGETHER_API_KEY?.length || 0,
-      keyPrefix: process.env.TOGETHER_API_KEY?.substring(0, 8) || 'not set'
-    },
     vertexAI: {
-      enabled: process.env.USE_VERTEX_AI === 'true',
+      configured: !!process.env.GOOGLE_CLOUD_PROJECT_ID,
       projectId: process.env.GOOGLE_CLOUD_PROJECT_ID || 'not set',
       credentialsPath: process.env.GOOGLE_APPLICATION_CREDENTIALS || 'not set',
+      location: process.env.VERTEX_AI_LOCATION || 'us-central1',
       credentialsExist: false // Will check file existence
     }
   };
@@ -37,12 +33,9 @@ export async function GET() {
     config,
     recommendations: {
       groq: config.groq.configured ? 'Ready' : 'Missing GROQ_API_KEY',
-      images: config.togetherAI.configured ? 'Together AI ready' : 
-              config.vertexAI.enabled ? 'Vertex AI enabled' : 
-              'No image provider configured',
-      vertexAI: config.vertexAI.enabled ? 
-                (config.vertexAI.credentialsExist ? 'Ready' : 'Credentials file not found') : 
-                'Not enabled'
+      vertexAI: config.vertexAI.configured ? 
+                (config.vertexAI.credentialsExist ? 'Ready for image generation' : 'Credentials file not found') : 
+                'Not configured - Missing GOOGLE_CLOUD_PROJECT_ID'
     }
   });
 }

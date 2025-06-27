@@ -6,7 +6,7 @@ This guide will help you deploy StoryWeaver to Vercel with proper API key config
 
 - Vercel account (free tier works)
 - Groq API key (for story generation)
-- Together AI API key (for image generation) - optional but recommended
+- Google Cloud account with Vertex AI enabled (for image generation)
 
 ## Getting API Keys
 
@@ -16,11 +16,11 @@ This guide will help you deploy StoryWeaver to Vercel with proper API key config
 3. Create a new API key
 4. Copy the key starting with `gsk_`
 
-### 2. Together AI API Key (Recommended)
-1. Sign up at https://www.together.ai
-2. You get $25 free credits on signup
-3. Go to Settings → API Keys
-4. Create and copy your API key
+### 2. Google Vertex AI Setup (Required for images)
+1. Follow the setup guide in [GOOGLE_VERTEX_AI_SETUP.md](./GOOGLE_VERTEX_AI_SETUP.md)
+2. Create a Google Cloud project with billing enabled
+3. Enable Vertex AI API
+4. Create a service account and download credentials
 
 ## Deployment Steps
 
@@ -68,9 +68,10 @@ This guide will help you deploy StoryWeaver to Vercel with proper API key config
 | Variable | Required | Description | Example |
 |----------|----------|-------------|---------|
 | `GROQ_API_KEY` | Yes | Groq API key for story generation | `gsk_...` |
-| `TOGETHER_API_KEY` | No* | Together AI key for image generation | `...` |
-
-*While not required, image generation significantly enhances the story experience.
+| `GOOGLE_CLOUD_PROJECT_ID` | Yes | Google Cloud project ID | `story-weaver-ai` |
+| `GOOGLE_CREDENTIALS_BASE64` | Yes | Base64-encoded service account | `eyJ0eXBlIj...` |
+| `GOOGLE_APPLICATION_CREDENTIALS` | Yes | Path to credentials file | `./service-account.json` |
+| `VERTEX_AI_LOCATION` | Yes | Google Cloud region | `us-central1` |
 
 ## Testing Your Deployment
 

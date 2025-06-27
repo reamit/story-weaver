@@ -45,6 +45,12 @@ export default function Home() {
       }
 
       const data = await response.json();
+      
+      // Check if there's an image generation error
+      if (data.imageError && includeImages) {
+        setError(`Story created, but images failed: ${data.imageError}`);
+      }
+      
       setStory(data);
     } catch (err: any) {
       setError(err.message || 'Something went wrong');

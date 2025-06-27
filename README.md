@@ -4,7 +4,7 @@ AI-powered personalized children's story generator with custom illustrations.
 
 **Status**: Active Development | Last Updated: June 27, 2025
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Freamit%2Fstory-weaver&env=GROQ_API_KEY,TOGETHER_API_KEY&envDescription=API%20keys%20for%20story%20and%20image%20generation&envLink=https%3A%2F%2Fgithub.com%2Freamit%2Fstory-weaver%2Fblob%2Fmaster%2FDEPLOYMENT.md)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Freamit%2Fstory-weaver&env=GROQ_API_KEY,GOOGLE_CLOUD_PROJECT_ID,GOOGLE_CREDENTIALS_BASE64,GOOGLE_APPLICATION_CREDENTIALS,VERTEX_AI_LOCATION&envDescription=API%20keys%20for%20story%20and%20image%20generation&envLink=https%3A%2F%2Fgithub.com%2Freamit%2Fstory-weaver%2Fblob%2Fmaster%2FDEPLOYMENT.md)
 
 ## Quick Start
 
@@ -22,7 +22,7 @@ AI-powered personalized children's story generator with custom illustrations.
 
 3. Add your API keys to `.env.local`:
    - `GROQ_API_KEY` - Get from [console.groq.com](https://console.groq.com)
-   - `TOGETHER_API_KEY` - Get from [together.ai](https://www.together.ai) ($25 free credits)
+   - Google Vertex AI credentials - See [GOOGLE_VERTEX_AI_SETUP.md](./GOOGLE_VERTEX_AI_SETUP.md)
 
 4. Install dependencies and run:
    ```bash
@@ -38,8 +38,8 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed instructions on deploying to V
 - Next.js 14 with App Router
 - TypeScript
 - Tailwind CSS
-- Groq (Llama 3.1 70B) for text
-- Together AI or Google Vertex AI for images
+- Groq (Llama 3.3 70B) for text generation
+- Google Vertex AI (Imagen 2) for image generation
 
 ## Features
 
