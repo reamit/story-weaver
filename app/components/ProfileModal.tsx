@@ -29,9 +29,16 @@ export default function ProfileModal({ profile, onClose, onEdit }: ProfileModalP
             <p className="text-lg">{profile.age} years old</p>
           </div>
 
+          {profile.gender && (
+            <div>
+              <h3 className="text-sm font-medium text-gray-600">Gender</h3>
+              <p className="text-lg capitalize">{profile.gender}</p>
+            </div>
+          )}
+
           <div>
-            <h3 className="text-sm font-medium text-gray-600">Gender</h3>
-            <p className="text-lg capitalize">{profile.gender}</p>
+            <h3 className="text-sm font-medium text-gray-600">Reading Level</h3>
+            <p className="text-lg capitalize">{profile.readingLevel?.replace('-', ' ')}</p>
           </div>
 
           <div>
@@ -47,6 +54,13 @@ export default function ProfileModal({ profile, onClose, onEdit }: ProfileModalP
               ))}
             </div>
           </div>
+
+          {profile.freeFormInterests && (
+            <div>
+              <h3 className="text-sm font-medium text-gray-600">Other Interests</h3>
+              <p className="text-lg">{profile.freeFormInterests}</p>
+            </div>
+          )}
 
           <div>
             <h3 className="text-sm font-medium text-gray-600">Profile Created</h3>

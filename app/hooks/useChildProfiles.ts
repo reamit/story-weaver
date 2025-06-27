@@ -6,8 +6,10 @@ export interface ChildProfile {
   id: string;
   name: string;
   age: number;
-  gender: 'boy' | 'girl' | 'other';
+  gender?: 'boy' | 'girl' | 'other';
   interests: string[];
+  freeFormInterests?: string;
+  readingLevel: string;
   createdAt: string;
   parentEmail: string;
 }

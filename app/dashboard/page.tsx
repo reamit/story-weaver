@@ -113,7 +113,8 @@ export default function DashboardPage() {
                   {profiles.map(profile => (
                     <div key={profile.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
                       <h3 className="text-lg font-semibold text-gray-800 mb-2">{profile.name}</h3>
-                      <p className="text-sm text-gray-600 mb-2">Age: {profile.age}</p>
+                      <p className="text-sm text-gray-600">Age: {profile.age}</p>
+                      <p className="text-sm text-gray-600 mb-2">Reading: {profile.readingLevel?.replace('-', ' ')}</p>
                       <div className="flex flex-wrap gap-1 mb-4">
                         {profile.interests.slice(0, 3).map(interest => (
                           <span key={interest} className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">
