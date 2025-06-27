@@ -1,5 +1,5 @@
 import Groq from 'groq-sdk';
-import { generatePersonalizedStoryPrompt, generatePersonalizedImagePrompt } from '@/app/lib/story-personalization';
+import { generatePersonalizedStoryPrompt, generatePersonalizedImagePrompt, createCharacterReference } from '@/app/lib/story-personalization';
 import { ChildProfile } from '@/app/hooks/useChildProfiles';
 
 const groq = new Groq({
@@ -55,9 +55,16 @@ export async function POST(req: Request) {
           projectId: process.env.GOOGLE_CLOUD_PROJECT_ID
         });
         
+        // Create consistent character description for all images
+        const characterDescription = profile ? createCharacterReference(profile as ChildProfile) : null;
+
         // Personalize image prompts if profile is provided
         const personalizedPrompts = profile 
-          ? imagePrompts.map(prompt => generatePersonalizedImagePrompt(prompt, profile as ChildProfile))
+          ? imagePrompts.map(prompt => generatePersonalizedImagePrompt(
+              prompt, 
+              profile as ChildProfile,
+              characterDescription || undefined
+            ))
           : imagePrompts;
 
         const imageResponse = await fetch(`${baseUrl}/api/generate-images-vertex`, {
