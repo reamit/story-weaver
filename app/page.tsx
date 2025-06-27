@@ -97,7 +97,7 @@ export default function Home() {
       
       // Log each image
       if (data.images && Array.isArray(data.images)) {
-        data.images.forEach((img, index) => {
+        data.images.forEach((img: string | null, index: number) => {
           console.log(`Image ${index + 1}:`, {
             exists: !!img,
             type: typeof img,
