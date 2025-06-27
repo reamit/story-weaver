@@ -48,6 +48,7 @@ export default function Home() {
       
       // Check if there's an image generation error
       if (data.imageError && includeImages) {
+        console.error('Image generation failed:', data.debugInfo);
         setError(`Story created, but images failed: ${data.imageError}`);
       }
       

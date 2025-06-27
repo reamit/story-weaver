@@ -79,7 +79,8 @@ Image 6: [brief visual description for illustration]
         }
       } catch (error) {
         console.error('Failed to generate images with Vertex AI:', error);
-        // Return story without images but include error info
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        // Return story without images but include detailed error info
         return Response.json({
           title,
           pages,
@@ -88,7 +89,12 @@ Image 6: [brief visual description for illustration]
           character,
           genre,
           age,
-          imageError: 'Failed to generate images. Please check Vertex AI configuration.'
+          imageError: `Failed to generate images: ${errorMessage}`,
+          debugInfo: {
+            projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
+            hasCredentials: !!process.env.GOOGLE_APPLICATION_CREDENTIALS,
+            error: errorMessage
+          }
         });
       }
     } else {

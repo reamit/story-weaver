@@ -6,6 +6,7 @@
     "dev": "next dev",
     "prebuild": "node scripts/setup-google-credentials.js",
     "build": "next build",
+    "postbuild": "node scripts/debug-credentials.js",
     "start": "next start",
     "lint": "next lint"
   },
