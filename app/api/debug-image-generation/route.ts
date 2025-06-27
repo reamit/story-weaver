@@ -1,6 +1,18 @@
 import { NextResponse } from 'next/server';
 import { generateImageWithCache } from '@/app/lib/vertex-ai';
 
+interface TestResult {
+  name: string;
+  success: boolean;
+  prompt?: string;
+  imageReceived?: boolean;
+  imageLength?: number;
+  imagePreview?: string;
+  fullImage?: string;
+  error?: string;
+  stack?: string;
+}
+
 export async function GET() {
   console.log('\n=== DEBUG IMAGE GENERATION ENDPOINT ===');
   
@@ -12,7 +24,7 @@ export async function GET() {
       credentialsLength: process.env.GOOGLE_CREDENTIALS_BASE64?.length || 0,
       location: process.env.VERTEX_AI_LOCATION || 'us-central1'
     },
-    tests: []
+    tests: [] as TestResult[]
   };
   
   // Test 1: Simple image generation
