@@ -3,7 +3,7 @@ import { google } from '@google-cloud/aiplatform/build/protos/protos';
 
 const projectId = process.env.GOOGLE_CLOUD_PROJECT_ID;
 const location = process.env.VERTEX_AI_LOCATION || 'us-central1';
-const model = 'imagegeneration@006'; // Imagen 2
+const model = 'imagegeneration'; // Imagen
 
 export class VertexAIService {
   private client: PredictionServiceClient;
