@@ -6,18 +6,12 @@ export async function POST(request: NextRequest) {
   try {
     const { prompts, style = 'digital art', characterSeed, character = 'hero' } = await request.json();
 
-    if (!process.env.GOOGLE_CLOUD_PROJECT_ID) {
-      return NextResponse.json(
-        { error: 'Google Cloud Project ID not configured' },
-        { status: 500 }
+    if (!process.env.GOOGLE_CLOUD_PROJECT_ID || !process.env.GOOGLE_CREDENTIALS_BASE64) {
+      console.warn('Vertex AI not properly configured. Using fallback images.');
+      const fallbackImages = prompts.map((prompt: string, index: number) => 
+        generateFallbackImage(prompt, index, character)
       );
-    }
-
-    if (!process.env.GOOGLE_CREDENTIALS_BASE64) {
-      return NextResponse.json(
-        { error: 'Google Application Credentials not configured' },
-        { status: 500 }
-      );
+      return NextResponse.json({ images: fallbackImages });
     }
 
     // Generate images with retry logic and better error handling
@@ -77,7 +71,9 @@ export async function POST(request: NextRequest) {
     const successfulImages = images.filter(img => img !== null);
     
     if (successfulImages.length === 0) {
-      throw new Error('All image generations failed');
+      console.error('All image generations failed. Returning fallback images.');
+      // Don't throw error, just use fallback images
+      // throw new Error('All image generations failed');
     }
 
     // If some images failed, fill with beautiful fallback images

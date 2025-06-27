@@ -13,10 +13,13 @@ export class VertexAIService {
           'base64'
         ).toString('utf-8');
         this.credentials = JSON.parse(credentialsJson);
+        console.log('Google credentials loaded successfully');
       } catch (error) {
         console.error('Failed to parse GOOGLE_CREDENTIALS_BASE64:', error);
         throw new Error('Invalid Google credentials');
       }
+    } else {
+      console.error('GOOGLE_CREDENTIALS_BASE64 not found in environment');
     }
   }
 
