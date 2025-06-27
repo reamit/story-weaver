@@ -1,16 +1,41 @@
+import { CHARACTER_DETAILS } from '../data/character-details';
+import CharacterIcon from './CharacterIcon';
+
 interface CharacterSelectorProps {
   selectedCharacter: string;
   onCharacterSelect: (character: string) => void;
 }
 
-const characters = [
-  { id: 'princess', name: 'Princess', emoji: '👸', color: 'from-pink-200 to-pink-300' },
-  { id: 'knight', name: 'Knight', emoji: '🛡️', color: 'from-blue-200 to-blue-300' },
-  { id: 'dragon', name: 'Dragon', emoji: '🐲', color: 'from-green-200 to-green-300' },
-  { id: 'wizard', name: 'Wizard', emoji: '🧙‍♂️', color: 'from-purple-200 to-purple-300' },
-  { id: 'cat', name: 'Magic Cat', emoji: '🐱', color: 'from-orange-200 to-orange-300' },
-  { id: 'mouse', name: 'Brave Mouse', emoji: '🐭', color: 'from-gray-200 to-gray-300' }
-];
+// Map character IDs to display information
+const characters = Object.entries(CHARACTER_DETAILS).map(([id, details]) => {
+  // Define colors for each character
+  const colorMap: Record<string, string> = {
+    princess: 'from-teal-200 to-teal-300',
+    knight: 'from-gray-200 to-gray-300',
+    dragon: 'from-blue-200 to-blue-300',
+    wizard: 'from-purple-200 to-purple-300',
+    cat: 'from-amber-200 to-amber-300',
+    mouse: 'from-stone-200 to-stone-300'
+  };
+  
+  // Define emojis for each character
+  const emojiMap: Record<string, string> = {
+    princess: '👑',
+    knight: '⚔️',
+    dragon: '🐲',
+    wizard: '🧙‍♂️',
+    cat: '🐱',
+    mouse: '🐭'
+  };
+  
+  return {
+    id,
+    name: details.name,
+    emoji: emojiMap[id] || '✨',
+    color: colorMap[id] || 'from-purple-200 to-purple-300',
+    description: details.core_identity.split('.')[0] // Take first sentence
+  };
+});
 
 export default function CharacterSelector({ selectedCharacter, onCharacterSelect }: CharacterSelectorProps) {
   return (
@@ -30,8 +55,15 @@ export default function CharacterSelector({ selectedCharacter, onCharacterSelect
             }`}
           >
             <div className={`bg-gradient-to-br ${char.color} rounded-lg p-4`}>
-              <div className="text-4xl mb-2 text-center">{char.emoji}</div>
+              <div className="mb-2 flex justify-center">
+                <CharacterIcon 
+                  characterId={char.id} 
+                  emoji={char.emoji} 
+                  size="medium"
+                />
+              </div>
               <div className="text-center font-medium text-gray-700">{char.name}</div>
+              <div className="text-xs text-center text-gray-600 mt-1">{char.description}</div>
             </div>
           </button>
         ))}

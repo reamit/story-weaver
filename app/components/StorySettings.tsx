@@ -1,3 +1,5 @@
+import { STORY_THEMES } from '../data/story-themes';
+
 interface StorySettingsProps {
   genre: string;
   setGenre: (genre: string) => void;
@@ -6,31 +8,26 @@ interface StorySettingsProps {
   disabled?: boolean;
 }
 
-const genres = [
-  { id: 'medieval', name: 'Medieval Kingdom', emoji: '🏰' },
-  { id: 'modern', name: 'Modern City', emoji: '🏙️' },
-  { id: 'space', name: 'Space Adventure', emoji: '🚀' }
-];
-
 export default function StorySettings({ genre, setGenre, age, setAge, disabled }: StorySettingsProps) {
   return (
     <div className="space-y-6">
       <div>
         <h3 className="text-xl font-semibold mb-3 text-gray-800">Choose Setting</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          {genres.map((g) => (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {STORY_THEMES.map((theme) => (
             <button
-              key={g.id}
-              onClick={() => setGenre(g.id)}
+              key={theme.id}
+              onClick={() => setGenre(theme.id)}
               className={`p-4 rounded-lg border-2 transition-all ${
-                genre === g.id
+                genre === theme.id
                   ? 'border-purple-500 bg-purple-50'
                   : 'border-gray-300 hover:border-gray-400'
               }`}
             >
-              <div className="flex items-center justify-center space-x-2">
-                <span className="text-2xl">{g.emoji}</span>
-                <span className="font-medium">{g.name}</span>
+              <div className="flex flex-col items-center space-y-2">
+                <span className="text-2xl">{theme.emoji}</span>
+                <span className="font-medium text-sm text-center">{theme.name}</span>
+                <span className="text-xs text-gray-600 text-center">{theme.description}</span>
               </div>
             </button>
           ))}
