@@ -102,12 +102,31 @@ export async function POST(req: Request) {
           })
         });
 
+        console.log('Image generation response status:', imageResponse.status);
+        
         if (imageResponse.ok) {
           const imageData = await imageResponse.json();
+          console.log('Image generation response:', {
+            hasImages: !!imageData.images,
+            imagesLength: imageData.images?.length || 0,
+            responseKeys: Object.keys(imageData)
+          });
+          
           images = imageData.images || [];
+          
+          console.log('Images received from vertex endpoint:');
+          images.forEach((img, index) => {
+            console.log(`Image ${index + 1}:`, {
+              type: typeof img,
+              length: img?.length || 0,
+              startsWithDataImage: img?.startsWith('data:image') || false,
+              first50Chars: img?.substring(0, 50) || 'null'
+            });
+          });
           
           // Ensure we have exactly 3 images to match our reduced prompts
           if (images.length > 3) {
+            console.log(`Trimming images from ${images.length} to 3`);
             images = images.slice(0, 3);
           }
         } else {
@@ -149,7 +168,7 @@ export async function POST(req: Request) {
       });
     }
 
-    return Response.json({
+    const finalResponse = {
       title,
       pages,
       imagePrompts,
@@ -157,7 +176,19 @@ export async function POST(req: Request) {
       character,
       genre,
       age
+    };
+    
+    console.log('\nFinal story response:');
+    console.log('Title:', finalResponse.title);
+    console.log('Pages count:', finalResponse.pages.length);
+    console.log('Image prompts count:', finalResponse.imagePrompts.length);
+    console.log('Images count:', finalResponse.images.length);
+    console.log('Images details:');
+    finalResponse.images.forEach((img, index) => {
+      console.log(`  Image ${index + 1}: ${img ? img.substring(0, 50) + '...' : 'null'}`);
     });
+    
+    return Response.json(finalResponse);
   } catch (error: any) {
     console.error('Story generation error:', error);
     return Response.json({ 

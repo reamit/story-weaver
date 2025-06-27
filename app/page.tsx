@@ -82,13 +82,34 @@ export default function Home() {
         setError(`Story created, but images failed: ${data.imageError}`);
       }
       
-      // Debug logging
-      console.log('Story response:', {
+      // Enhanced debug logging
+      console.log('=== STORY GENERATION RESPONSE DEBUG ===');
+      console.log('Full response data:', data);
+      console.log('Response details:', {
         hasImages: !!data.images,
         imageCount: data.images?.length || 0,
+        imagesArray: data.images,
         imagePromptsCount: data.imagePrompts?.length || 0,
-        firstImage: data.images?.[0]?.substring(0, 50)
+        firstImage: data.images?.[0]?.substring(0, 50),
+        imageError: data.imageError,
+        debugInfo: data.debugInfo
       });
+      
+      // Log each image
+      if (data.images && Array.isArray(data.images)) {
+        data.images.forEach((img, index) => {
+          console.log(`Image ${index + 1}:`, {
+            exists: !!img,
+            type: typeof img,
+            length: img?.length || 0,
+            startsWithDataUrl: img?.startsWith?.('data:image') || false,
+            first100: img?.substring?.(0, 100) || 'null'
+          });
+        });
+      } else {
+        console.log('Images is not an array or is missing');
+      }
+      console.log('=== END DEBUG ===');
       
       setStory(data);
     } catch (err: any) {

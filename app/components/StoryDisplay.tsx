@@ -14,6 +14,28 @@ interface StoryDisplayProps {
 
 export default function StoryDisplay({ story, onNewStory }: StoryDisplayProps) {
   const [currentPage, setCurrentPage] = useState(0);
+  
+  // Debug logging on mount and when story changes
+  console.log('=== STORY DISPLAY DEBUG ===');
+  console.log('Story prop received:', story);
+  console.log('Images in story:', {
+    hasImages: !!story.images,
+    imagesLength: story.images?.length || 0,
+    imagesArray: story.images,
+    imagePrompts: story.imagePrompts
+  });
+  
+  if (story.images && story.images.length > 0) {
+    story.images.forEach((img, index) => {
+      console.log(`Story Display - Image ${index + 1}:`, {
+        exists: !!img,
+        type: typeof img,
+        length: img?.length || 0,
+        first50: img?.substring(0, 50) || 'null'
+      });
+    });
+  }
+  console.log('=== END STORY DISPLAY DEBUG ===');
 
   // Map 6 pages to 3 images: beginning (pages 0-1), middle (pages 2-3), end (pages 4-5)
   const getImageForPage = (pageIndex: number, totalPages: number, images: string[]) => {
@@ -51,6 +73,18 @@ export default function StoryDisplay({ story, onNewStory }: StoryDisplayProps) {
 
       <div className="bg-white rounded-xl shadow-lg p-8 mb-6">
         {/* Story Image - Map pages to our 3 key images */}
+        {(() => {
+          const currentImage = story.images && story.images.length > 0 ? 
+            getImageForPage(currentPage, story.pages.length, story.images) : null;
+          
+          console.log(`Rendering page ${currentPage + 1}, image:`, {
+            hasCurrentImage: !!currentImage,
+            currentImageLength: currentImage?.length || 0,
+            currentImageFirst50: currentImage?.substring(0, 50) || 'null'
+          });
+          
+          return null;
+        })()}
         {story.images && story.images.length > 0 ? (
           <div className="mb-6 rounded-lg overflow-hidden shadow-md">
             <img 

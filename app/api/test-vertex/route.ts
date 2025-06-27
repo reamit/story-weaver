@@ -27,15 +27,28 @@ export async function GET() {
     console.log('Testing Vertex AI with prompt:', testPrompt);
     const image = await vertexAI.generateImage(testPrompt, 'watercolor');
     
-    return NextResponse.json({
+    // More detailed response for debugging
+    const response = {
       success: true,
       configured: true,
       hasImage: !!image,
       imageLength: image?.length || 0,
+      imageType: typeof image,
+      imageStartsWithDataUrl: image?.startsWith('data:image') || false,
+      imageFirst100Chars: image?.substring(0, 100) || '',
       projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
       location: process.env.VERTEX_AI_LOCATION || 'us-central1',
-      message: 'Vertex AI is working correctly!'
+      message: 'Vertex AI is working correctly!',
+      // Include the actual image for testing
+      testImage: image
+    };
+    
+    console.log('Test vertex response:', {
+      ...response,
+      testImage: response.testImage?.substring(0, 100) + '...'
     });
+    
+    return NextResponse.json(response);
   } catch (error) {
     console.error('Vertex AI test error:', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';

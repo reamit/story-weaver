@@ -37,7 +37,8 @@ export class VertexAIService {
       throw new Error('Google credentials not available');
     }
     
-    const apiEndpoint = `https://${location}-aiplatform.googleapis.com/v1/projects/${projectId}/locations/${location}/publishers/google/models/imagegeneration:predict`;
+    // Updated to use the correct Imagen model endpoint
+    const apiEndpoint = `https://${location}-aiplatform.googleapis.com/v1/projects/${projectId}/locations/${location}/publishers/google/models/imagegeneration@006:predict`;
     console.log('API Endpoint:', apiEndpoint);
     
     const requestBody = {
@@ -98,15 +99,50 @@ export class VertexAIService {
       }
 
       const result = await response.json();
-      console.log('API Response:', JSON.stringify(result, null, 2));
+      console.log('API Response structure:', {
+        hasPredictions: !!result.predictions,
+        predictionsLength: result.predictions?.length || 0,
+        firstPredictionKeys: result.predictions?.[0] ? Object.keys(result.predictions[0]) : [],
+        responseKeys: Object.keys(result)
+      });
+      
+      // Log full response if no predictions
+      if (!result.predictions || result.predictions.length === 0) {
+        console.log('Full API response (no predictions):', JSON.stringify(result));
+      }
       
       if (result.predictions && result.predictions.length > 0) {
         const prediction = result.predictions[0];
-        console.log('First prediction keys:', Object.keys(prediction));
-        if (prediction.bytesBase64Encoded) {
-          console.log('Image data found, length:', prediction.bytesBase64Encoded.length);
+        console.log('First prediction details:', {
+          keys: Object.keys(prediction),
+          hasBytesBase64Encoded: !!prediction.bytesBase64Encoded,
+          bytesLength: prediction.bytesBase64Encoded?.length || 0,
+          hasBase64Encoded: !!prediction.base64Encoded,
+          base64Length: prediction.base64Encoded?.length || 0,
+          hasImageBytes: !!prediction.imageBytes,
+          imageBytesLength: prediction.imageBytes?.length || 0
+        });
+        
+        // Try different possible field names for the image data
+        const imageData = prediction.bytesBase64Encoded || 
+                         prediction.base64Encoded || 
+                         prediction.imageBytes || 
+                         prediction.image;
+        
+        if (imageData) {
+          console.log('Image data found!');
+          console.log('Image data type:', typeof imageData);
+          console.log('Image data length:', imageData.length);
+          console.log('First 100 chars:', imageData.substring(0, 100));
           console.log('=== VERTEX AI IMAGE GENERATION SUCCESS ===');
-          return `data:image/png;base64,${prediction.bytesBase64Encoded}`;
+          
+          // Check if already has data URL prefix
+          if (imageData.startsWith('data:image')) {
+            return imageData;
+          }
+          return `data:image/png;base64,${imageData}`;
+        } else {
+          console.error('No image data found in prediction:', prediction);
         }
       }
       

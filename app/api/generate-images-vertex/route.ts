@@ -45,17 +45,33 @@ export async function POST(request: NextRequest) {
     // Process images one at a time with longer delays for maximum reliability
     const results: (string | null)[] = [];
     
+    console.log(`Starting to generate ${prompts.length} images...`);
+    
     for (let i = 0; i < prompts.length; i++) {
+      console.log(`\nGenerating image ${i + 1}/${prompts.length}...`);
       const result = await generateWithRetry(prompts[i], i);
+      
+      if (result) {
+        console.log(`Image ${i + 1} generated successfully`);
+        console.log(`Image data type: ${typeof result}`);
+        console.log(`Image data length: ${result.length}`);
+        console.log(`Image starts with 'data:image': ${result.startsWith('data:image')}`);
+        console.log(`First 100 chars: ${result.substring(0, 100)}`);
+      } else {
+        console.log(`Image ${i + 1} generation failed`);
+      }
+      
       results.push(result);
       
       // Add substantial delay between images to avoid rate limiting
       if (i < prompts.length - 1) {
+        console.log(`Waiting 3 seconds before next image...`);
         await new Promise(resolve => setTimeout(resolve, 3000)); // 3 second delay
       }
     }
     
     const images = results;
+    console.log(`\nTotal images generated: ${images.filter(img => img !== null).length}/${prompts.length}`);
     
     // Filter out failed images
     const successfulImages = images.filter(img => img !== null);
@@ -69,7 +85,20 @@ export async function POST(request: NextRequest) {
       img || generateFallbackImage(prompts[index], index, character)
     );
 
-    return NextResponse.json({ images: finalImages });
+    console.log('\nFinal response preparation:');
+    console.log(`Total images to return: ${finalImages.length}`);
+    finalImages.forEach((img, index) => {
+      if (img) {
+        console.log(`Image ${index + 1}: ${img.substring(0, 100)}...`);
+      } else {
+        console.log(`Image ${index + 1}: null`);
+      }
+    });
+    
+    const response = { images: finalImages };
+    console.log('Sending response with images array of length:', response.images.length);
+    
+    return NextResponse.json(response);
   } catch (error) {
     console.error('Vertex AI error:', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';

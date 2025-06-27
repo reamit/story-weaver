@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Generation Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    .test-section {
+      background: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .status {
+      padding: 10px;
+      border-radius: 4px;
+      margin: 10px 0;
+    }
+    .success { background-color: #d4edda; color: #155724; }
+    .error { background-color: #f8d7da; color: #721c24; }
+    .info { background-color: #d1ecf1; color: #0c5460; }
+    .image-container {
+      margin: 20px 0;
+      text-align: center;
+    }
+    .image-container img {
+      max-width: 100%;
+      height: auto;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+    }
+    pre {
+      background: #f4f4f4;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+    button {
+      background: #6366f1;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover {
+      background: #4f46e5;
+    }
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    .log-entry {
+      margin: 5px 0;
+      padding: 5px;
+      background: #f9f9f9;
+      border-left: 3px solid #6366f1;
+      font-family: monospace;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Image Generation Test Dashboard</h1>
+
+  <!-- Test 1: Vertex AI Configuration -->
+  <div class="test-section">
+    <h2>Test 1: Vertex AI Configuration</h2>
+    <button onclick="testVertexConfig()">Test Configuration</button>
+    <div id="config-result"></div>
+  </div>
+
+  <!-- Test 2: Direct Image Generation -->
+  <div class="test-section">
+    <h2>Test 2: Direct Image Generation</h2>
+    <button onclick="testDirectGeneration()">Generate Test Image</button>
+    <div id="direct-result"></div>
+    <div id="direct-image" class="image-container"></div>
+  </div>
+
+  <!-- Test 3: Story with Images -->
+  <div class="test-section">
+    <h2>Test 3: Full Story Generation with Images</h2>
+    <button onclick="testStoryGeneration()">Generate Story with Images</button>
+    <div id="story-result"></div>
+    <div id="story-images"></div>
+  </div>
+
+  <!-- Console Log -->
+  <div class="test-section">
+    <h2>Console Log</h2>
+    <button onclick="clearLog()">Clear Log</button>
+    <div id="console-log" style="max-height: 300px; overflow-y: auto;"></div>
+  </div>
+
+  <script>
+    // Helper function to add log entries
+    function addLog(message, data = null) {
+      const logDiv = document.getElementById('console-log');
+      const entry = document.createElement('div');
+      entry.className = 'log-entry';
+      const timestamp = new Date().toLocaleTimeString();
+      entry.innerHTML = `[${timestamp}] ${message}`;
+      if (data) {
+        entry.innerHTML += '<br>' + JSON.stringify(data, null, 2);
+      }
+      logDiv.appendChild(entry);
+      logDiv.scrollTop = logDiv.scrollHeight;
+    }
+
+    function clearLog() {
+      document.getElementById('console-log').innerHTML = '';
+    }
+
+    // Test 1: Vertex AI Configuration
+    async function testVertexConfig() {
+      const resultDiv = document.getElementById('config-result');
+      resultDiv.innerHTML = '<div class="status info">Testing configuration...</div>';
+      addLog('Testing Vertex AI configuration...');
+      
+      try {
+        const response = await fetch('/api/test-vertex');
+        const data = await response.json();
+        
+        addLog('Configuration test response:', data);
+        
+        if (data.success) {
+          resultDiv.innerHTML = `
+            <div class="status success">✓ Vertex AI is configured and working!</div>
+            <pre>${JSON.stringify(data, null, 2)}</pre>
+          `;
+          
+          // Display test image if available
+          if (data.testImage) {
+            resultDiv.innerHTML += `
+              <h3>Test Image Generated:</h3>
+              <div class="image-container">
+                <img src="${data.testImage}" alt="Test image" />
+              </div>
+            `;
+          }
+        } else {
+          resultDiv.innerHTML = `
+            <div class="status error">✗ Vertex AI test failed</div>
+            <pre>${JSON.stringify(data, null, 2)}</pre>
+          `;
+        }
+      } catch (error) {
+        addLog('Configuration test error:', error.message);
+        resultDiv.innerHTML = `
+          <div class="status error">✗ Failed to test configuration: ${error.message}</div>
+        `;
+      }
+    }
+
+    // Test 2: Direct Image Generation
+    async function testDirectGeneration() {
+      const resultDiv = document.getElementById('direct-result');
+      const imageDiv = document.getElementById('direct-image');
+      
+      resultDiv.innerHTML = '<div class="status info">Generating images...</div>';
+      imageDiv.innerHTML = '';
+      addLog('Starting direct image generation test...');
+      
+      try {
+        const prompts = [
+          'A brave knight in shining armor standing proudly',
+          'A magical dragon flying over a castle',
+          'A treasure chest filled with gold coins'
+        ];
+        
+        addLog('Sending prompts:', prompts);
+        
+        const response = await fetch('/api/generate-images-vertex', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompts, style: 'cartoon' })
+        });
+        
+        const data = await response.json();
+        addLog('Image generation response:', data);
+        
+        if (response.ok && data.images && data.images.length > 0) {
+          resultDiv.innerHTML = `
+            <div class="status success">✓ Generated ${data.images.length} images successfully!</div>
+          `;
+          
+          imageDiv.innerHTML = '<h3>Generated Images:</h3>';
+          data.images.forEach((image, index) => {
+            if (image) {
+              addLog(`Image ${index + 1} data:`, {
+                length: image.length,
+                startsWithDataUrl: image.startsWith('data:image'),
+                first50Chars: image.substring(0, 50)
+              });
+              
+              imageDiv.innerHTML += `
+                <div style="margin: 20px 0;">
+                  <h4>Image ${index + 1}: ${prompts[index]}</h4>
+                  <img src="${image}" alt="Generated image ${index + 1}" style="max-width: 400px;" />
+                </div>
+              `;
+            } else {
+              imageDiv.innerHTML += `
+                <div style="margin: 20px 0;">
+                  <h4>Image ${index + 1}: Failed to generate</h4>
+                  <div class="status error">No image data</div>
+                </div>
+              `;
+            }
+          });
+        } else {
+          resultDiv.innerHTML = `
+            <div class="status error">✗ Failed to generate images</div>
+            <pre>${JSON.stringify(data, null, 2)}</pre>
+          `;
+        }
+      } catch (error) {
+        addLog('Direct generation error:', error.message);
+        resultDiv.innerHTML = `
+          <div class="status error">✗ Error: ${error.message}</div>
+        `;
+      }
+    }
+
+    // Test 3: Story Generation with Images
+    async function testStoryGeneration() {
+      const resultDiv = document.getElementById('story-result');
+      const imagesDiv = document.getElementById('story-images');
+      
+      resultDiv.innerHTML = '<div class="status info">Generating story with images...</div>';
+      imagesDiv.innerHTML = '';
+      addLog('Starting story generation with images...');
+      
+      try {
+        const storyData = {
+          character: 'brave knight',
+          genre: 'adventure',
+          age: 6
+        };
+        
+        addLog('Story parameters:', storyData);
+        
+        const response = await fetch('/api/generate-story-with-images', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(storyData)
+        });
+        
+        const data = await response.json();
+        addLog('Story generation response:', {
+          title: data.title,
+          pagesCount: data.pages?.length,
+          imagePromptsCount: data.imagePrompts?.length,
+          imagesCount: data.images?.length,
+          hasImageError: !!data.imageError
+        });
+        
+        if (response.ok) {
+          resultDiv.innerHTML = `
+            <div class="status success">✓ Story generated successfully!</div>
+            <h3>${data.title}</h3>
+            <p>Pages: ${data.pages?.length || 0}</p>
+            <p>Image Prompts: ${data.imagePrompts?.length || 0}</p>
+            <p>Images Generated: ${data.images?.length || 0}</p>
+          `;
+          
+          if (data.imageError) {
+            resultDiv.innerHTML += `
+              <div class="status error">Image Error: ${data.imageError}</div>
+            `;
+          }
+          
+          if (data.images && data.images.length > 0) {
+            imagesDiv.innerHTML = '<h3>Story Images:</h3>';
+            data.images.forEach((image, index) => {
+              if (image) {
+                addLog(`Story image ${index + 1}:`, {
+                  hasData: true,
+                  length: image.length,
+                  type: typeof image
+                });
+                
+                imagesDiv.innerHTML += `
+                  <div style="margin: 20px 0;">
+                    <h4>Image ${index + 1}</h4>
+                    <p><em>${data.imagePrompts[index]}</em></p>
+                    <img src="${image}" alt="Story image ${index + 1}" style="max-width: 400px;" />
+                  </div>
+                `;
+              }
+            });
+          } else {
+            imagesDiv.innerHTML = '<div class="status error">No images were generated</div>';
+          }
+          
+          // Show first page of story
+          if (data.pages && data.pages.length > 0) {
+            resultDiv.innerHTML += `
+              <h4>First Page:</h4>
+              <p>${data.pages[0]}</p>
+            `;
+          }
+        } else {
+          resultDiv.innerHTML = `
+            <div class="status error">✗ Failed to generate story</div>
+            <pre>${JSON.stringify(data, null, 2)}</pre>
+          `;
+        }
+      } catch (error) {
+        addLog('Story generation error:', error.message);
+        resultDiv.innerHTML = `
+          <div class="status error">✗ Error: ${error.message}</div>
+        `;
+      }
+    }
+
+    // Run configuration test on load
+    window.onload = () => {
+      addLog('Test page loaded. Click buttons to run tests.');
+    };
+  </script>
+</body>
+</html>
