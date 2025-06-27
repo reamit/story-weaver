@@ -69,7 +69,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-blue-50 to-purple-50 p-4">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-center mb-8 text-purple-800">
+        <h1 className="text-8xl font-bold font-modak text-center mb-8 text-purple-800">
           ✨ StoryWeaver ✨
         </h1>
 
