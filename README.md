@@ -2,7 +2,7 @@
 
 AI-powered personalized children's story generator with custom illustrations.
 
-**Status**: Active Development | Last Updated: June 27, 2025
+**Status**: Active Development | Last Updated: June 27, 2025 | Vertex AI Enabled
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Freamit%2Fstory-weaver&env=GROQ_API_KEY,GOOGLE_CLOUD_PROJECT_ID,GOOGLE_CREDENTIALS_BASE64,GOOGLE_APPLICATION_CREDENTIALS,VERTEX_AI_LOCATION&envDescription=API%20keys%20for%20story%20and%20image%20generation&envLink=https%3A%2F%2Fgithub.com%2Freamit%2Fstory-weaver%2Fblob%2Fmaster%2FDEPLOYMENT.md)
 
