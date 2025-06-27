@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 export async function GET() {
   console.log('=== DEBUG VERTEX ENDPOINT ===');
   
-  const diagnostics = {
+  const diagnostics: any = {
     env: {
       NODE_ENV: process.env.NODE_ENV,
       GOOGLE_CLOUD_PROJECT_ID: process.env.GOOGLE_CLOUD_PROJECT_ID ? 'Set' : 'Not set',
