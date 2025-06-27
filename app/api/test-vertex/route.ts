@@ -2,12 +2,20 @@ import { NextResponse } from 'next/server';
 import { VertexAIService } from '@/app/lib/vertex-ai';
 
 export async function GET() {
+  console.log('=== TEST VERTEX ENDPOINT CALLED ===');
+  
   try {
     // Check if Vertex AI is configured
     const isConfigured = !!(
       process.env.GOOGLE_CLOUD_PROJECT_ID && 
       (process.env.GOOGLE_CREDENTIALS_BASE64 || process.env.GOOGLE_APPLICATION_CREDENTIALS)
     );
+
+    console.log('Configuration check:', {
+      projectId: process.env.GOOGLE_CLOUD_PROJECT_ID ? 'Set' : 'Not set',
+      credentialsBase64: process.env.GOOGLE_CREDENTIALS_BASE64 ? `Set (${process.env.GOOGLE_CREDENTIALS_BASE64.length} chars)` : 'Not set',
+      credentialsFile: process.env.GOOGLE_APPLICATION_CREDENTIALS ? 'Set' : 'Not set',
+    });
 
     if (!isConfigured) {
       return NextResponse.json({
@@ -21,7 +29,22 @@ export async function GET() {
     }
 
     // Try to generate a test image
-    const vertexAI = new VertexAIService();
+    let vertexAI;
+    try {
+      vertexAI = new VertexAIService();
+      console.log('VertexAIService initialized successfully');
+    } catch (error) {
+      console.error('Failed to initialize VertexAIService:', error);
+      return NextResponse.json({
+        success: false,
+        configured: true,
+        error: error instanceof Error ? error.message : 'Failed to initialize VertexAI service',
+        projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
+        location: process.env.VERTEX_AI_LOCATION || 'us-central1',
+        details: error instanceof Error ? error.stack : undefined
+      }, { status: 500 });
+    }
+    
     const testPrompt = 'A friendly cartoon dragon in a magical forest, children\'s book style';
     
     console.log('Testing Vertex AI with prompt:', testPrompt);

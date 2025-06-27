@@ -19,6 +19,20 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ images: fallbackImages });
     }
 
+    // Initialize VertexAI service once to check for initialization errors
+    console.log('Initializing Vertex AI service...');
+    try {
+      const testService = new (await import('@/app/lib/vertex-ai')).VertexAIService();
+      console.log('Vertex AI service initialized successfully');
+    } catch (initError) {
+      console.error('Failed to initialize Vertex AI service:', initError);
+      console.error('Falling back to placeholder images due to initialization error');
+      const fallbackImages = prompts.map((prompt: string, index: number) => 
+        generateFallbackImage(prompt, index, character)
+      );
+      return NextResponse.json({ images: fallbackImages });
+    }
+    
     // Generate images with retry logic and better error handling
     const generateWithRetry = async (prompt: string, index: number, maxRetries = 3) => {
       for (let attempt = 1; attempt <= maxRetries; attempt++) {
@@ -29,6 +43,11 @@ export async function POST(request: NextRequest) {
         } catch (err) {
           const errorMessage = err instanceof Error ? err.message : 'Unknown error';
           console.error(`Attempt ${attempt}/${maxRetries} failed for image ${index + 1}: "${prompt.substring(0, 50)}..."`, errorMessage);
+          
+          // Log more details on first failure
+          if (attempt === 1 && err instanceof Error) {
+            console.error('Error details:', err.stack);
+          }
           
           if (attempt < maxRetries) {
             // Wait before retry with longer delays
