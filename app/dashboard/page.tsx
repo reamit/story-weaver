@@ -7,6 +7,7 @@ import { useChildProfiles, ChildProfile } from '../hooks/useChildProfiles';
 import ChildProfileForm from '../components/ChildProfileForm';
 import ProfileModal from '../components/ProfileModal';
 import { Eye, Edit2, Trash2, Plus } from 'lucide-react';
+import Logo from '../components/Logo';
 
 interface User {
   email: string;
@@ -77,7 +78,7 @@ export default function DashboardPage() {
       <div className="container mx-auto px-4 py-8">
         <div className="bg-white rounded-2xl shadow-xl p-8">
           <div className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl font-bold text-purple-800">Parent Dashboard</h1>
+            <Logo />
             <div className="text-sm text-gray-600">
               Logged in as: {user.email}
             </div>

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Logo from '../components/Logo';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -38,9 +39,9 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-100 to-pink-100">
       <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
-        <h1 className="text-3xl font-bold text-center mb-8 text-purple-800">
-          Welcome to StoryWeaver
-        </h1>
+        <div className="flex justify-center mb-8">
+          <Logo linkToHome={false} />
+        </div>
         
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
