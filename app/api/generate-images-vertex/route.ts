@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
     
     for (let i = 0; i < prompts.length; i += batchSize) {
       const batch = prompts.slice(i, i + batchSize);
-      const batchPromises = batch.map((prompt, batchIndex) => 
+      const batchPromises = batch.map((prompt: string, batchIndex: number) => 
         generateWithRetry(prompt, i + batchIndex)
       );
       
