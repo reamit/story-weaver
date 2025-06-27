@@ -19,16 +19,48 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate images in parallel
-    const imagePromises = prompts.map((prompt: string) => 
-      generateImageWithCache(prompt, style)
-        .catch(err => {
-          console.error(`Failed to generate image for prompt: ${prompt}`, err);
-          return null; // Return null for failed images
-        })
-    );
+    // Generate images with retry logic and better error handling
+    const generateWithRetry = async (prompt: string, index: number, maxRetries = 2) => {
+      for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+          const result = await generateImageWithCache(prompt, style);
+          console.log(`Successfully generated image ${index + 1} on attempt ${attempt}`);
+          return result;
+        } catch (err) {
+          const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+          console.error(`Attempt ${attempt}/${maxRetries} failed for image ${index + 1}: "${prompt.substring(0, 50)}..."`, errorMessage);
+          
+          if (attempt < maxRetries) {
+            // Wait before retry with exponential backoff
+            const waitTime = 1000 * Math.pow(2, attempt - 1); // 1s, 2s, 4s...
+            console.log(`Waiting ${waitTime}ms before retry...`);
+            await new Promise(resolve => setTimeout(resolve, waitTime));
+          }
+        }
+      }
+      return null;
+    };
 
-    const images = await Promise.all(imagePromises);
+    // Process images in batches to avoid rate limits
+    const batchSize = 2; // Process 2 images at a time
+    const results: (string | null)[] = [];
+    
+    for (let i = 0; i < prompts.length; i += batchSize) {
+      const batch = prompts.slice(i, i + batchSize);
+      const batchPromises = batch.map((prompt, batchIndex) => 
+        generateWithRetry(prompt, i + batchIndex)
+      );
+      
+      const batchResults = await Promise.all(batchPromises);
+      results.push(...batchResults);
+      
+      // Add delay between batches if not the last batch
+      if (i + batchSize < prompts.length) {
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+    }
+    
+    const images = results;
     
     // Filter out failed images
     const successfulImages = images.filter(img => img !== null);
