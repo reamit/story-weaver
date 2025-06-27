@@ -5,6 +5,7 @@ import CharacterSelector from './components/CharacterSelector';
 import StorySettings from './components/StorySettings';
 import StoryDisplay from './components/StoryDisplay';
 import LoadingState from './components/LoadingState';
+import Link from 'next/link';
 
 interface Story {
   title: string;
@@ -20,7 +21,7 @@ export default function Home() {
   const [story, setStory] = useState<Story | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [includeImages, setIncludeImages] = useState(false); // Start with images OFF to save credits
+  const [includeImages, setIncludeImages] = useState(true); // Default to true per specs
 
   const generateStory = async () => {
     if (!character || !genre) {
@@ -69,9 +70,11 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-purple-200 p-4 flex items-center justify-center">
       <div className="max-w-6xl w-full bg-purple-100 rounded-3xl p-8 shadow-lg">
-        <h1 className="text-8xl font-modak text-center mb-8 text-purple-800">
-          StoryWeaver
-        </h1>
+        <div className="text-center mb-8">
+          <h1 className="text-8xl font-modak text-purple-800">
+            ✨ StoryWeaver ✨
+          </h1>
+        </div>
 
         {!story && !loading && (
           <>
@@ -87,18 +90,39 @@ export default function Home() {
               setAge={setAge}
             />
 
-            <div className="mt-6 text-center">
-              <label className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  checked={includeImages}
-                  onChange={(e) => setIncludeImages(e.target.checked)}
-                  className="form-checkbox h-5 w-5 text-purple-600"
-                />
-                <span className="ml-2 text-gray-700">
-                  Include AI-generated images
-                </span>
-              </label>
+            <div className="flex justify-between items-center mt-8">
+              <Link 
+                href="/login" 
+                className="text-purple-600 hover:text-purple-800 font-medium"
+              >
+                Parent Login →
+              </Link>
+              
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-gray-700">Include AI-generated images</span>
+                  <button
+                    onClick={() => setIncludeImages(!includeImages)}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                      includeImages ? 'bg-purple-600' : 'bg-gray-300'
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                        includeImages ? 'translate-x-6' : 'translate-x-1'
+                      }`}
+                    />
+                  </button>
+                </div>
+                
+                <button
+                  onClick={generateStory}
+                  disabled={!character || !genre}
+                  className="px-8 py-3 bg-purple-600 text-white rounded-2xl font-semibold text-lg hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                >
+                  Generate Story ✨
+                </button>
+              </div>
             </div>
 
             {error && (
@@ -106,16 +130,6 @@ export default function Home() {
                 {error}
               </div>
             )}
-
-            <div className="mt-8 text-center">
-              <button
-                onClick={generateStory}
-                disabled={!character || !genre}
-                className="px-8 py-3 bg-purple-600 text-white rounded-2xl font-semibold text-lg hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
-              >
-                Generate Story ✨
-              </button>
-            </div>
           </>
         )}
 

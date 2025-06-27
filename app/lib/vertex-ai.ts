@@ -20,18 +20,19 @@ export class VertexAIService {
     }
   }
 
-  async generateImage(prompt: string, style: string = 'digital art') {
+  async generateImage(prompt: string, style: string = 'digital art', seed?: number) {
     const apiEndpoint = `https://${location}-aiplatform.googleapis.com/v1/projects/${projectId}/locations/${location}/publishers/google/models/imagegeneration@006:predict`;
     
     const requestBody = {
       instances: [{
-        prompt: `${prompt}, ${style} style, children's book illustration, child-friendly, colorful, high quality`
+        prompt: `${prompt}, ${style} style, children's book illustration, child-friendly, colorful, high quality, consistent character design`
       }],
       parameters: {
         sampleCount: 1,
         aspectRatio: "1:1",
         safetyFilterLevel: "block_some",
-        personGeneration: "allow_adult"
+        personGeneration: "allow_adult",
+        ...(seed && { seed: seed })
       }
     };
 
@@ -56,8 +57,21 @@ export class VertexAIService {
 
       if (!response.ok) {
         const error = await response.text();
-        console.error('Vertex AI API error:', error);
-        throw new Error(`Vertex AI API error: ${response.status} ${error}`);
+        console.error('Vertex AI API error:', {
+          status: response.status,
+          statusText: response.statusText,
+          error: error.substring(0, 500), // Limit error message length
+          prompt: prompt.substring(0, 100)
+        });
+        
+        // Check for specific error types
+        if (response.status === 429) {
+          throw new Error(`Rate limit exceeded - too many requests`);
+        } else if (response.status === 400) {
+          throw new Error(`Invalid request - prompt may contain filtered content`);
+        } else {
+          throw new Error(`Vertex AI API error: ${response.status}`);
+        }
       }
 
       const result = await response.json();

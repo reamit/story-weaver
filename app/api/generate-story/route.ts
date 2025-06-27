@@ -1,4 +1,6 @@
 import Groq from 'groq-sdk';
+import { generatePersonalizedStoryPrompt } from '@/app/lib/story-personalization';
+import { ChildProfile } from '@/app/hooks/useChildProfiles';
 
 const groq = new Groq({
   apiKey: process.env.GROQ_API_KEY
@@ -6,34 +8,15 @@ const groq = new Groq({
 
 export async function POST(req: Request) {
   try {
-    const { character, genre, age } = await req.json();
+    const { character, genre, age, profile } = await req.json();
 
-    const prompt = `
-You are a children's book author. Create a 6-page story with these requirements:
-- Main character: ${character}
-- Setting: ${genre} 
-- Age group: ${age} years old
-- Each page: 2-3 simple sentences
-- Include a gentle moral about friendship, kindness, or courage
-- Use age-appropriate vocabulary
-
-Format your response EXACTLY like this:
-Title: [story title]
-
-Page 1: [story text]
-Page 2: [story text]
-Page 3: [story text]
-Page 4: [story text]
-Page 5: [story text]
-Page 6: [story text]
-
-Image 1: [brief visual description for illustration]
-Image 2: [brief visual description for illustration]
-Image 3: [brief visual description for illustration]
-Image 4: [brief visual description for illustration]
-Image 5: [brief visual description for illustration]
-Image 6: [brief visual description for illustration]
-`;
+    // Generate personalized or standard story prompt
+    const prompt = generatePersonalizedStoryPrompt(
+      character, 
+      genre, 
+      age,
+      profile as ChildProfile | null
+    );
 
     const completion = await groq.chat.completions.create({
       messages: [{ role: "user", content: prompt }],
@@ -60,7 +43,8 @@ Image 6: [brief visual description for illustration]
       imagePrompts,
       character,
       genre,
-      age
+      age,
+      profile: profile ? { name: profile.name, interests: profile.interests } : null
     });
   } catch (error: any) {
     console.error('Story generation error:', error);
