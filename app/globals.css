@@ -7,11 +7,8 @@
   --background: 0 0% 100%;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground: 0 0% 95%;
-    --background: 0 0% 5%;
-  }
+* {
+  font-family: 'Crimson Text', serif;
 }
 
 body {

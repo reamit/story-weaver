@@ -25,7 +25,7 @@ export default function Home() {
   const [story, setStory] = useState<Story | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [includeImages, setIncludeImages] = useState(false); // Start with images OFF to save credits
+  const [includeImages, setIncludeImages] = useState(true); // Default to true per specs
   const [selectedProfile, setSelectedProfile] = useState<ChildProfile | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -126,10 +126,17 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-blue-50 to-purple-50 p-4">
-      <div className="max-w-4xl mx-auto">
+    <main className="min-h-screen bg-purple-200 p-4 flex items-center justify-center">
+      <div className="max-w-6xl w-full bg-purple-100 rounded-3xl p-8 shadow-lg">
+        {/* Merged: Logo from HEAD + StoryWeaver title from master */}
         <div className="flex justify-between items-center mb-8">
-          <Logo />
+          <div className="flex items-center gap-4">
+            <Logo />
+            <h1 className="text-6xl font-modak text-purple-800">
+              ✨ StoryWeaver ✨
+            </h1>
+          </div>
+          {/* Merged: Conditional login/dashboard link from HEAD */}
           {isLoggedIn ? (
             <Link 
               href="/dashboard" 
@@ -149,25 +156,6 @@ export default function Home() {
 
         {!story && !loading && (
           <>
-            <div className="mb-6 flex justify-center">
-              <ProfileSelector 
-                selectedProfile={selectedProfile}
-                onProfileSelect={handleProfileSelect}
-              />
-            </div>
-
-            {selectedProfile && (
-              <div className="mb-6 p-4 bg-purple-50 rounded-lg text-center">
-                <p className="text-purple-800">
-                  Creating a personalized story for <strong>{selectedProfile.name}</strong>
-                </p>
-                <p className="text-sm text-purple-600 mt-1">
-                  Age {selectedProfile.age} • Loves: {selectedProfile.interests.slice(0, 3).join(', ')}
-                  {selectedProfile.interests.length > 3 && ` +${selectedProfile.interests.length - 3} more`}
-                </p>
-              </div>
-            )}
-
             <CharacterSelector 
               selectedCharacter={character}
               onCharacterSelect={setCharacter}
@@ -178,21 +166,41 @@ export default function Home() {
               setGenre={setGenre}
               age={age}
               setAge={setAge}
-              disabled={!!selectedProfile}
             />
 
-            <div className="mt-6 text-center">
-              <label className="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  checked={includeImages}
-                  onChange={(e) => setIncludeImages(e.target.checked)}
-                  className="form-checkbox h-5 w-5 text-purple-600"
+            <div className="flex justify-between items-center mt-8">
+              <div className="flex items-center gap-4">
+                <ProfileSelector 
+                  selectedProfile={selectedProfile}
+                  onProfileSelect={handleProfileSelect}
                 />
-                <span className="ml-2 text-gray-700">
-                  Include AI-generated images
-                </span>
-              </label>
+              </div>
+              
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-gray-700">Include AI-generated images</span>
+                  <button
+                    onClick={() => setIncludeImages(!includeImages)}
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                      includeImages ? 'bg-purple-600' : 'bg-gray-300'
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                        includeImages ? 'translate-x-6' : 'translate-x-1'
+                      }`}
+                    />
+                  </button>
+                </div>
+                
+                <button
+                  onClick={generateStory}
+                  disabled={!character || !genre}
+                  className="px-8 py-3 bg-purple-600 text-white rounded-2xl font-semibold text-lg hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                >
+                  Generate Story ✨
+                </button>
+              </div>
             </div>
 
             {error && (
@@ -200,16 +208,6 @@ export default function Home() {
                 {error}
               </div>
             )}
-
-            <div className="mt-8 text-center">
-              <button
-                onClick={generateStory}
-                disabled={!character || !genre}
-                className="px-8 py-3 bg-purple-600 text-white rounded-lg font-semibold text-lg hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
-              >
-                Generate Story ✨
-              </button>
-            </div>
           </>
         )}
 

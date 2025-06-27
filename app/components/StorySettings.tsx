@@ -12,7 +12,7 @@ export default function StorySettings({ genre, setGenre, age, setAge, disabled }
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-xl font-semibold mb-3 text-gray-800">Choose Setting</h3>
+        <h3 className="text-xl font-semibold mb-3 text-gray-800">Select Theme</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {STORY_THEMES.map((theme) => (
             <button
