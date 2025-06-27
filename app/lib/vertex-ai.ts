@@ -1,71 +1,71 @@
-import { PredictionServiceClient } from '@google-cloud/aiplatform';
-import { google } from '@google-cloud/aiplatform/build/protos/protos';
-
 const projectId = process.env.GOOGLE_CLOUD_PROJECT_ID;
 const location = process.env.VERTEX_AI_LOCATION || 'us-central1';
-const model = 'imagegeneration'; // Imagen
 
 export class VertexAIService {
-  private client: PredictionServiceClient;
-  private endpoint: string;
+  private credentials: any;
 
   constructor() {
     // Parse credentials from base64 if available
-    let credentials;
     if (process.env.GOOGLE_CREDENTIALS_BASE64) {
       try {
         const credentialsJson = Buffer.from(
           process.env.GOOGLE_CREDENTIALS_BASE64,
           'base64'
         ).toString('utf-8');
-        credentials = JSON.parse(credentialsJson);
+        this.credentials = JSON.parse(credentialsJson);
       } catch (error) {
         console.error('Failed to parse GOOGLE_CREDENTIALS_BASE64:', error);
         throw new Error('Invalid Google credentials');
       }
     }
-
-    this.client = new PredictionServiceClient({
-      apiEndpoint: `${location}-aiplatform.googleapis.com`,
-      credentials: credentials,
-    });
-    
-    this.endpoint = `projects/${projectId}/locations/${location}/publishers/google/models/${model}`;
   }
 
   async generateImage(prompt: string, style: string = 'digital art') {
-    const instance = {
-      prompt: `${prompt}, ${style} style, children's book illustration, child-friendly, colorful`,
-    };
-
-    const instanceValue = google.protobuf.Value.fromObject(instance);
-    const instances = [instanceValue];
-
-    const parameter = {
-      sampleCount: 1,
-      aspectRatio: '1:1',
-      safetyFilterLevel: 'block_few',
-      personGeneration: 'allow_adult',
-    };
+    const apiEndpoint = `https://${location}-aiplatform.googleapis.com/v1/projects/${projectId}/locations/${location}/publishers/google/models/imagegeneration:predict`;
     
-    const parameters = google.protobuf.Value.fromObject(parameter);
-
-    const request = {
-      endpoint: this.endpoint,
-      instances,
-      parameters,
+    const requestBody = {
+      instances: [{
+        prompt: `${prompt}, ${style} style, children's book illustration, child-friendly, colorful, high quality`
+      }],
+      parameters: {
+        sampleCount: 1,
+        aspectRatio: "1:1",
+        safetyFilterLevel: "block_some",
+        personGeneration: "allow_adult"
+      }
     };
 
     try {
-      const [response] = await this.client.predict(request);
-      const predictions = response.predictions;
+      // Get access token using service account
+      const { GoogleAuth } = await import('google-auth-library');
+      const auth = new GoogleAuth({
+        credentials: this.credentials,
+        scopes: ['https://www.googleapis.com/auth/cloud-platform']
+      });
+      const client = await auth.getClient();
+      const accessToken = await client.getAccessToken();
+
+      const response = await fetch(apiEndpoint, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${accessToken.token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody)
+      });
+
+      if (!response.ok) {
+        const error = await response.text();
+        console.error('Vertex AI API error:', error);
+        throw new Error(`Vertex AI API error: ${response.status} ${error}`);
+      }
+
+      const result = await response.json();
       
-      if (predictions && predictions.length > 0) {
-        const prediction = predictions[0].structValue?.fields;
-        const base64Image = prediction?.bytesBase64Encoded?.stringValue;
-        
-        if (base64Image) {
-          return `data:image/png;base64,${base64Image}`;
+      if (result.predictions && result.predictions.length > 0) {
+        const prediction = result.predictions[0];
+        if (prediction.bytesBase64Encoded) {
+          return `data:image/png;base64,${prediction.bytesBase64Encoded}`;
         }
       }
       
