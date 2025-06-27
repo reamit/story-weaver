@@ -7,6 +7,9 @@
   --background: 0 0% 100%;
 }
 
+* {
+  font-family: 'Crimson Text', serif;
+}
 
 body {
   color: hsl(var(--foreground));

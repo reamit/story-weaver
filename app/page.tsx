@@ -67,10 +67,10 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-blue-50 to-purple-50 p-4">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-8xl font-bold font-modak text-center mb-8 text-purple-800">
-          ✨ StoryWeaver ✨
+    <main className="min-h-screen bg-purple-200 p-4 flex items-center justify-center">
+      <div className="max-w-4xl w-full bg-purple-100 rounded-3xl p-8 shadow-lg">
+        <h1 className="text-8xl font-modak text-center mb-8 text-purple-800">
+          StoryWeaver
         </h1>
 
         {!story && !loading && (
