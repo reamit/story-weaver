@@ -68,7 +68,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-purple-200 p-4 flex items-center justify-center">
-      <div className="max-w-4xl w-full bg-purple-100 rounded-3xl p-8 shadow-lg">
+      <div className="max-w-6xl w-full bg-purple-100 rounded-3xl p-8 shadow-lg">
         <h1 className="text-8xl font-modak text-center mb-8 text-purple-800">
           StoryWeaver
         </h1>
@@ -111,7 +111,7 @@ export default function Home() {
               <button
                 onClick={generateStory}
                 disabled={!character || !genre}
-                className="px-8 py-3 bg-purple-600 text-white rounded-lg font-semibold text-lg hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                className="px-8 py-3 bg-purple-600 text-white rounded-2xl font-semibold text-lg hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
               >
                 Generate Story ✨
               </button>
