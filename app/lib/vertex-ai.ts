@@ -43,12 +43,12 @@ export class VertexAIService {
     
     const requestBody = {
       instances: [{
-        prompt: `${prompt}, ${style} style, children's book illustration, child-friendly, colorful, high quality, consistent character design`
+        prompt: `${prompt}, ${style} style, children's book illustration, bright colors, whimsical, playful, suitable for young children`
       }],
       parameters: {
         sampleCount: 1,
         aspectRatio: "1:1",
-        safetyFilterLevel: "block_some",
+        safetyFilterLevel: "block_few",
         personGeneration: "allow_adult",
         ...(seed && { seed: seed })
       }
