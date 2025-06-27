@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Lottie from 'lottie-react';
+import bookAnimation from '../../claude/resources/Animation - 1751048361996.json';
 
 interface LoadingStep {
   id: string;
@@ -88,12 +90,18 @@ export default function EnhancedLoadingState() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[400px] p-8">
-      {/* Animated Character */}
+      {/* Animated Book */}
       <div className="relative mb-8">
-        <div className="text-8xl animate-bounce">
+        <div className="w-48 h-48">
+          <Lottie 
+            animationData={bookAnimation} 
+            loop={true}
+            className="w-full h-full"
+          />
+        </div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl">
           {currentStepData.emoji}
         </div>
-        <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-16 h-2 bg-gray-200 rounded-full blur-sm opacity-50"></div>
       </div>
 
       {/* Current Step */}
