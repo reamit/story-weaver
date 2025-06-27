@@ -110,6 +110,16 @@ Image 6: [brief visual description for illustration]
       }
     }
 
+    // Add debug information about image generation
+    const imageGenerationStatus = {
+      attempted: true, // This endpoint is specifically for images
+      vertexAIEnabled: useVertexAI,
+      vertexAIConfigured: !!(process.env.GOOGLE_CLOUD_PROJECT_ID && process.env.GOOGLE_APPLICATION_CREDENTIALS),
+      togetherAIConfigured: !!process.env.TOGETHER_API_KEY,
+      imagesGenerated: images.length,
+      expectedImages: imagePrompts.length
+    };
+
     return Response.json({
       title,
       pages,
@@ -117,7 +127,8 @@ Image 6: [brief visual description for illustration]
       images,
       character,
       genre,
-      age
+      age,
+      debug: process.env.NODE_ENV === 'development' ? imageGenerationStatus : undefined
     });
   } catch (error: any) {
     console.error('Story generation error:', error);
