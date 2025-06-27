@@ -29,7 +29,7 @@ export default function StorySettings({ genre, setGenre, age, setAge }: StorySet
             >
               <div className="flex items-center justify-center space-x-2">
                 <span className="text-2xl">{g.emoji}</span>
-                <span className="font-medium">{g.name}</span>
+                <span className="font-medium text-xl">{g.name}</span>
               </div>
             </button>
           ))}
