@@ -5,8 +5,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Kids Story Generator",
-  description: "AI-powered personalized children's stories",
+  title: "StoryWeaver - AI Children's Story Generator",
+  description: "Create personalized children's stories with AI-generated illustrations",
 };
 
 export default function RootLayout({

@@ -63,7 +63,7 @@ export default function Home() {
     <main className="min-h-screen bg-gradient-to-b from-blue-50 to-purple-50 p-4">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-4xl font-bold text-center mb-8 text-purple-800">
-          ✨ Kids Story Generator ✨
+          ✨ StoryWeaver ✨
         </h1>
 
         {!story && !loading && (
@@ -89,7 +89,7 @@ export default function Home() {
                   className="form-checkbox h-5 w-5 text-purple-600"
                 />
                 <span className="ml-2 text-gray-700">
-                  Include AI-generated images (uses Together AI credits)
+                  Include AI-generated images
                 </span>
               </label>
             </div>
