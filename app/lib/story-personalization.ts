@@ -2,6 +2,70 @@ import { ChildProfile } from '../hooks/useChildProfiles';
 import { READING_LEVELS } from '../data/interests';
 import { generateConsistentCharacter, createDetailedCharacterPrompt, createImageConsistencyPrompt } from './character-consistency';
 
+function generatePageTemplate(
+  readingLevel: string, 
+  name: string, 
+  primaryInterests: string,
+  allInterests: string[],
+  character: string,
+  genre: string,
+  gender?: string
+): string {
+  const pageCount = {
+    'pre-reader': 4,
+    'early-reader': 6,
+    'beginner': 6,
+    'intermediate': 8,
+    'advanced': 10
+  }[readingLevel] || 6;
+
+  let pages = '';
+  let images = '';
+
+  // Generate page templates based on reading level
+  if (readingLevel === 'pre-reader') {
+    pages = `Page 1: [${name} sees ${primaryInterests}. Max 5 words!]
+Page 2: [${name} plays. Simple action. Max 5 words!]
+Page 3: [Problem happens. Very simple. Max 5 words!]
+Page 4: [${name} happy! Problem solved. Max 5 words!]`;
+    
+    images = `Image 1: [${name} with big smile, surrounded by ${primaryInterests}]
+Image 2: [${name} playing with ${primaryInterests}]
+Image 3: [Simple problem scene with ${name} looking worried]
+Image 4: [${name} very happy with ${primaryInterests}]`;
+  } else if (readingLevel === 'early-reader') {
+    for (let i = 1; i <= 6; i++) {
+      pages += `Page ${i}: [1-2 sentences, 5-7 words each. Simple words only.]\n`;
+    }
+    for (let i = 1; i <= 6; i++) {
+      images += `Image ${i}: [Scene with ${name} and ${primaryInterests} elements]\n`;
+    }
+  } else if (readingLevel === 'beginner') {
+    for (let i = 1; i <= 6; i++) {
+      pages += `Page ${i}: [2-3 sentences, 7-10 words each. Grade 1-2 vocabulary.]\n`;
+    }
+    for (let i = 1; i <= 6; i++) {
+      images += `Image ${i}: [Detailed scene with ${name} interacting with ${allInterests.join(', ')}]\n`;
+    }
+  } else if (readingLevel === 'intermediate') {
+    for (let i = 1; i <= 8; i++) {
+      pages += `Page ${i}: [3-4 sentences, 10-15 words each. Descriptive language. Character emotions.]\n`;
+    }
+    for (let i = 1; i <= 8; i++) {
+      images += `Image ${i}: [Complex scene showing ${name}'s emotions and ${primaryInterests} environment]\n`;
+    }
+  } else if (readingLevel === 'advanced') {
+    for (let i = 1; i <= 10; i++) {
+      pages += `Page ${i}: [4-5 sentences, 15-20 words each. Rich vocabulary. Complex ideas.]\n`;
+    }
+    for (let i = 1; i <= 10; i++) {
+      images += `Image ${i}: [Sophisticated illustration with ${name}, multiple characters, and ${allInterests.join(', ')} themes]\n`;
+    }
+  }
+
+  return pages + '\n\n' + images;
+}
+
 export function generatePersonalizedStoryPrompt(
   character: string,
   genre: string,
@@ -40,23 +104,41 @@ Image 6: [brief visual description for illustration]`;
   // Get reading level details
   const readingLevel = READING_LEVELS.find(level => level.value === profile.readingLevel) || READING_LEVELS[2];
   
-  // Sentence structure based on reading level
+  // Detailed sentence structure based on reading level
   const sentenceStructure = {
-    'pre-reader': '1 very short sentence (3-5 words)',
-    'early-reader': '1-2 short sentences (5-7 words each)',
-    'beginner': '2-3 simple sentences',
-    'intermediate': '3-4 sentences with descriptive language',
-    'advanced': '3-5 sentences with rich vocabulary'
+    'pre-reader': '1 very short sentence per page (3-5 words maximum). Use repetition.',
+    'early-reader': '1-2 short sentences per page (5-7 words each). Simple subject-verb-object structure.',
+    'beginner': '2-3 simple sentences per page (7-10 words each). Basic conjunctions allowed.',
+    'intermediate': '3-4 sentences per page with descriptive language (10-15 words each).',
+    'advanced': '4-5 sentences per page with rich vocabulary and complex structure (15-20 words each).'
   }[profile.readingLevel] || '2-3 simple sentences';
 
-  // Vocabulary guidance based on age and reading level
+  // Vocabulary and content guidance based on reading level
   const vocabularyGuide = {
-    'pre-reader': 'Use only very simple words. Focus on colors, shapes, and basic actions.',
-    'early-reader': 'Use common sight words and simple vocabulary.',
-    'beginner': 'Use age-appropriate vocabulary with context clues.',
-    'intermediate': 'Include some challenging words with context.',
-    'advanced': 'Use rich, varied vocabulary appropriate for the age.'
+    'pre-reader': 'Use only very simple words: colors (red, blue), sizes (big, small), actions (run, jump, play). Repeat key words. Focus on visual storytelling.',
+    'early-reader': 'Use common sight words (the, and, is, are, was) and simple vocabulary. Present tense mainly. One idea per sentence.',
+    'beginner': 'Use grade 1-2 vocabulary. Mix of tenses allowed. Simple cause and effect. Basic emotions (happy, sad, excited).',
+    'intermediate': 'Use grade 3-4 vocabulary. Descriptive adjectives and adverbs. Multiple plot points. Character development.',
+    'advanced': 'Use grade 5-6 vocabulary. Complex sentence structures. Metaphors allowed. Deeper themes and character motivations.'
   }[profile.readingLevel] || 'Use age-appropriate vocabulary';
+
+  // Story complexity based on reading level
+  const storyComplexity = {
+    'pre-reader': 'Very simple linear story. One clear problem and solution. Happy ending.',
+    'early-reader': 'Simple story with beginning, middle, end. Basic problem solving. Clear moral.',
+    'beginner': 'Story with mild conflict and resolution. Character learns something. Simple subplot allowed.',
+    'intermediate': 'Story with multiple challenges. Character growth. Can include plot twist. Secondary characters.',
+    'advanced': 'Complex story with character development. Multiple plot threads. Nuanced resolution. Deeper themes.'
+  }[profile.readingLevel] || 'Simple story with clear structure';
+
+  // Page count based on reading level
+  const pageStructure = {
+    'pre-reader': '4 pages (very short story)',
+    'early-reader': '6 pages (standard length)',
+    'beginner': '6 pages (standard length)',
+    'intermediate': '8 pages (longer story)',
+    'advanced': '10 pages (chapter-like story)'
+  }[profile.readingLevel] || '6 pages';
 
   // Build interest-based elements
   const primaryInterests = profile.interests.slice(0, 2).join(' and ');
@@ -87,35 +169,40 @@ STORY REQUIREMENTS:
 - Make ${profile.name} the main character of the story
 - Main character type: ${character} (but named ${profile.name})
 - Setting: Adapt the ${genre} setting to incorporate ${primaryInterests}
-- The story MUST be deeply connected to their interests - not just mentioning them, but making them central to the plot
-- Each page: ${sentenceStructure}
-- ${vocabularyGuide}
+- Story length: ${pageStructure}
+- Each page MUST follow: ${sentenceStructure}
+- Vocabulary requirements: ${vocabularyGuide}
+- Story complexity: ${storyComplexity}
 - Include a moral that specifically relates to ${primaryInterests}
 - Use ${pronouns} pronouns for ${profile.name}
 
-CRITICAL INSTRUCTIONS:
-1. The entire story must revolve around ${primaryInterests}
-2. Every page should have elements from their interests
-3. The ${character} character should be engaged in activities related to ${allInterests.join(', ')}
-4. Make the setting reflect their interests (e.g., if they love space, even a medieval story should have star/moon elements)
-5. Character appearance: ${profile.name} should be consistently described as a ${profile.age}-year-old ${profile.gender || 'child'}
+CRITICAL INSTRUCTIONS FOR READING LEVEL (${profile.readingLevel}):
+1. STRICTLY follow the sentence count and word limits for ${profile.readingLevel} level
+2. The entire story must revolve around ${primaryInterests}
+3. Adapt complexity: ${storyComplexity}
+4. Every sentence must follow the vocabulary guide exactly
+5. ${profile.readingLevel === 'pre-reader' ? 'Use LOTS of repetition and rhyming if possible' : ''}
+6. ${profile.readingLevel === 'early-reader' ? 'Focus on sight words and simple patterns' : ''}
+7. ${profile.readingLevel === 'intermediate' || profile.readingLevel === 'advanced' ? 'Include character emotions and development' : 'Keep emotions very simple'}
+
+${profile.readingLevel === 'pre-reader' ? `
+EXAMPLES FOR PRE-READER:
+- Good: "${profile.name} sees stars." (3 words)
+- Good: "Big blue rocket!" (3 words)  
+- Good: "${profile.name} goes up, up!" (4 words with repetition)
+- Bad: "${profile.name} discovers a mysterious rocket." (too complex)
+- Bad: "The astronaut explores the galaxy." (too many big words)` : ''}
+
+${profile.readingLevel === 'early-reader' ? `
+EXAMPLES FOR EARLY READER:
+- Good: "${profile.name} has a red bike. The bike goes fast." (simple sentences)
+- Good: "She sees a big dog. The dog is happy." (sight words)
+- Bad: "${profile.name} enthusiastically rides her bicycle." (complex words)` : ''}
 
 Format your response EXACTLY like this:
 Title: ${profile.name}'s [adventure name]
 
-Page 1: [story text with ${profile.name} as main character]
-Page 2: [story text]
-Page 3: [story text]
-Page 4: [story text]
-Page 5: [story text]
-Page 6: [story text with moral/lesson]
-
-Image 1: [Detailed scene description: ${profile.name} as the ${character} in ${genre} setting, surrounded by ${primaryInterests} elements. Show ${profile.name} as a ${profile.age}-year-old ${profile.gender || 'child'}]
-Image 2: [Action scene: ${profile.name} actively engaged with ${primaryInterests}, maintaining consistent appearance from Image 1]
-Image 3: [Challenge scene: ${profile.name} facing a problem related to ${primaryInterests}, same character appearance]
-Image 4: [Problem-solving scene: ${profile.name} using knowledge of ${allInterests.slice(0, 2).join(' and ')} to find solution]
-Image 5: [Success scene: ${profile.name} succeeding with help from ${primaryInterests} elements]
-Image 6: [Happy ending: ${profile.name} celebrating, surrounded by all their favorite things from ${allInterests.join(', ')}]
+${generatePageTemplate(profile.readingLevel, profile.name, primaryInterests, allInterests, character, genre, profile.gender)}
 
 IMPORTANT FOR IMAGES: 
 - Every image MUST show ${profile.name} with the same appearance
