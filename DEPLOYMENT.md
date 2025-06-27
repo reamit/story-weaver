@@ -50,6 +50,13 @@ This guide will help you deploy StoryWeaver to Vercel with proper API key config
      ```
      GROQ_API_KEY=gsk_your_actual_key_here
      TOGETHER_API_KEY=your_actual_together_key_here
+     
+     # For Google Vertex AI (optional):
+     GOOGLE_CLOUD_PROJECT_ID=your-project-id
+     GOOGLE_CREDENTIALS_BASE64=base64_encoded_service_account
+     GOOGLE_APPLICATION_CREDENTIALS=./service-account.json
+     VERTEX_AI_LOCATION=us-central1
+     USE_VERTEX_AI=true
      ```
 
 ### Option 3: Deploy with Vercel Button

@@ -55,9 +55,40 @@ Image 6: [brief visual description for illustration]
     const imageMatches = content.match(/Image \d+: (.+)/g) || [];
     const imagePrompts = imageMatches.map(match => match.replace(/Image \d+: /, '').trim());
 
-    // If Together AI is configured, generate images
+    // Generate images based on available provider
     let images: string[] = [];
-    if (process.env.TOGETHER_API_KEY) {
+    const useVertexAI = process.env.USE_VERTEX_AI === 'true';
+    
+    if (useVertexAI && process.env.GOOGLE_CLOUD_PROJECT_ID) {
+      // Use Google Vertex AI
+      try {
+        const imageResponse = await fetch(`${req.headers.get('origin')}/api/generate-images-vertex`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            prompts: imagePrompts,
+            style: 'cartoon'
+          })
+        });
+
+        if (imageResponse.ok) {
+          const imageData = await imageResponse.json();
+          images = imageData.images || [];
+        } else {
+          const errorData = await imageResponse.json();
+          console.error('Vertex AI image generation failed:', errorData);
+        }
+      } catch (error) {
+        console.error('Failed to generate images with Vertex AI:', error);
+        // Try fallback to Together AI if available
+        if (process.env.TOGETHER_API_KEY) {
+          console.log('Falling back to Together AI...');
+        }
+      }
+    }
+    
+    // Use Together AI if Vertex AI is not used or failed
+    if (images.length === 0 && process.env.TOGETHER_API_KEY) {
       try {
         const imageResponse = await fetch(`${req.headers.get('origin')}/api/generate-images`, {
           method: 'POST',
@@ -74,7 +105,7 @@ Image 6: [brief visual description for illustration]
           images = imageData.images || [];
         }
       } catch (error) {
-        console.error('Failed to generate images:', error);
+        console.error('Failed to generate images with Together AI:', error);
         // Continue without images
       }
     }
