@@ -5,6 +5,8 @@ import CharacterSelector from './components/CharacterSelector';
 import StorySettings from './components/StorySettings';
 import StoryDisplay from './components/StoryDisplay';
 import LoadingState from './components/LoadingState';
+import ProfileSelector from './components/ProfileSelector';
+import { ChildProfile } from './hooks/useChildProfiles';
 import Link from 'next/link';
 
 interface Story {
@@ -22,6 +24,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [includeImages, setIncludeImages] = useState(true); // Default to true per specs
+  const [selectedProfile, setSelectedProfile] = useState<ChildProfile | null>(null);
 
   const generateStory = async () => {
     if (!character || !genre) {
@@ -91,12 +94,18 @@ export default function Home() {
             />
 
             <div className="flex justify-between items-center mt-8">
-              <Link 
-                href="/login" 
-                className="text-purple-600 hover:text-purple-800 font-medium"
-              >
-                Parent Login →
-              </Link>
+              <div className="flex items-center gap-4">
+                <ProfileSelector 
+                  selectedProfile={selectedProfile}
+                  onProfileSelect={setSelectedProfile}
+                />
+                <Link 
+                  href="/login" 
+                  className="text-purple-600 hover:text-purple-800 font-medium"
+                >
+                  Parent Login →
+                </Link>
+              </div>
               
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
