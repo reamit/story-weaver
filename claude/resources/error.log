@@ -1,0 +1,386 @@
+
+Jun 27 15:36:16.99
+OPTIONS
+204
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/
+Jun 27 15:36:16.47
+GET
+200
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/icon
+3
+Error: br, #FF6B6B, #4ECDC4): Missing ) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15632:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15661:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15651:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15643:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15716:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15640:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15828:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:16107:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:16211:0)
+Jun 27 15:36:16.16
+GET
+200
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/login
+Jun 27 15:36:16.15
+GET
+200
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/api/auth/session
+Jun 27 15:36:15.11
+OPTIONS
+204
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/
+Jun 27 15:36:14.63
+GET
+200
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/icon
+Jun 27 15:36:14.50
+GET
+200
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/login
+Jun 27 15:36:14.48
+GET
+200
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/api/auth/session
+Jun 27 15:36:11.77
+OPTIONS
+204
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/
+Jun 27 15:36:11.30
+GET
+200
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/icon
+Error: br, #FF6B6B, #4ECDC4): Missing )
+Jun 27 15:36:11.07
+GET
+200
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/login
+Jun 27 15:36:11.06
+GET
+200
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/api/auth/session
+Jun 27 15:36:10.44
+GET
+200
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/_next/image
+Jun 27 15:35:46.71
+GET
+200
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/apple-icon
+4
+Error: br, #FF6B6B, #4ECDC4): Missing ) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15632:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15661:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15651:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15643:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15716:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15640:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15828:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:16107:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:16211:0)
+Jun 27 15:35:41.01
+POST
+200
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/api/generate-images-vertex
+212
+All image generations failed. Returning fallback images.
+Jun 27 15:35:39.68
+POST
+200
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/api/generate-story-with-images
+16
+Image 3: data:image/svg+xml;base64,CiAgICA8c3ZnIHdpZHRoPSI1...
+Jun 27 15:34:44.89
+POST
+200
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/api/generate-images-vertex
+212
+All image generations failed. Returning fallback images.
+Jun 27 15:34:43.29
+POST
+200
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/api/generate-story-with-images
+16
+Image 3: data:image/svg+xml;base64,CiAgICA8c3ZnIHdpZHRoPSI1...
+Jun 27 15:34:34.54
+OPTIONS
+204
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/
+Jun 27 15:34:33.92
+GET
+200
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/dashboard
+Jun 27 15:34:33.84
+GET
+200
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/dashboard
+Jun 27 15:34:33.76
+GET
+307
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/login
+Jun 27 15:34:33.76
+GET
+200
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/api/auth/session
+Jun 27 15:34:33.37
+GET
+200
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/
+Jun 27 15:32:47.52
+GET
+200
+story-weaver-dd11lo8em-team3-7a07f490.vercel.app
+/icon
+Jun 27 15:32:47.51
+GET
+200
+story-weaver-dd11lo8em-team3-7a07f490.vercel.app
+/login
+Jun 27 15:32:47.47
+GET
+200
+story-weaver-dd11lo8em-team3-7a07f490.vercel.app
+/api/auth/session
+Jun 27 15:32:47.33
+GET
+200
+story-weaver-dd11lo8em-team3-7a07f490.vercel.app
+/icon
+Jun 27 15:32:47.32
+GET
+200
+story-weaver-dd11lo8em-team3-7a07f490.vercel.app
+/login
+Jun 27 15:32:47.30
+GET
+200
+story-weaver-dd11lo8em-team3-7a07f490.vercel.app
+/api/auth/session
+Jun 27 15:32:46.24
+GET
+200
+story-weaver-dd11lo8em-team3-7a07f490.vercel.app
+/
+Jun 27 15:32:46.19
+GET
+200
+story-weaver-dd11lo8em-team3-7a07f490.vercel.app
+/
+Jun 27 15:26:02.09
+OPTIONS
+204
+story-weaver-oumi40fo6-team3-7a07f490.vercel.app
+/
+Jun 27 15:26:01.65
+GET
+200
+story-weaver-oumi40fo6-team3-7a07f490.vercel.app
+/icon
+Error: br, #FF6B6B, #4ECDC4): Missing )
+Jun 27 15:26:01.23
+GET
+200
+story-weaver-oumi40fo6-team3-7a07f490.vercel.app
+/login
+Jun 27 15:26:01.22
+GET
+200
+story-weaver-oumi40fo6-team3-7a07f490.vercel.app
+/api/auth/session
+Jun 27 15:20:34.20
+POST
+200
+story-weaver-oumi40fo6-team3-7a07f490.vercel.app
+/api/generate-images-vertex
+97
+Sending response with images array of length: 3
+Jun 27 15:20:31.79
+POST
+200
+story-weaver-oumi40fo6-team3-7a07f490.vercel.app
+/api/generate-story-with-images
+16
+Image 3: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABgAA...
+Jun 27 15:20:19.41
+GET
+200
+story-weaver-oumi40fo6-team3-7a07f490.vercel.app
+/api/auth/session
+Jun 27 15:20:12.61
+OPTIONS
+204
+story-weaver-oumi40fo6-team3-7a07f490.vercel.app
+/
+Jun 27 15:20:11.93
+GET
+200
+story-weaver-oumi40fo6-team3-7a07f490.vercel.app
+/icon
+2
+Error: br, #FF6B6B, #4ECDC4): Missing ) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15632:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15661:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15651:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15643:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15716:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15640:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15828:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:16107:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:16211:0)
+Jun 27 15:20:11.58
+GET
+200
+story-weaver-oumi40fo6-team3-7a07f490.vercel.app
+/login
+Jun 27 15:20:11.57
+GET
+200
+story-weaver-oumi40fo6-team3-7a07f490.vercel.app
+/api/auth/session
+Jun 27 15:20:05.17
+GET
+200
+story-weaver-oumi40fo6-team3-7a07f490.vercel.app
+/icon
+Jun 27 15:20:04.86
+GET
+200
+story-weaver-oumi40fo6-team3-7a07f490.vercel.app
+/login
+Jun 27 15:20:04.76
+GET
+200
+story-weaver-oumi40fo6-team3-7a07f490.vercel.app
+/api/auth/session
+Jun 27 15:20:03.99
+GET
+200
+story-weaver-oumi40fo6-team3-7a07f490.vercel.app
+/icon
+2
+Error: br, #FF6B6B, #4ECDC4): Missing ) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15632:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15661:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15651:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15643:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15716:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15640:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15828:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:16107:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:16211:0)
+Jun 27 15:20:03.77
+GET
+200
+story-weaver-oumi40fo6-team3-7a07f490.vercel.app
+/login
+Jun 27 15:20:03.77
+GET
+200
+story-weaver-oumi40fo6-team3-7a07f490.vercel.app
+/api/auth/session
+Jun 27 15:20:01.55
+GET
+200
+story-weaver-oumi40fo6-team3-7a07f490.vercel.app
+/
+Jun 27 15:20:01.55
+GET
+200
+story-weaver-oumi40fo6-team3-7a07f490.vercel.app
+/
+Jun 27 15:19:22.10
+GET
+200
+story-weaver-vert.vercel.app
+/dashboard
+Jun 27 15:19:21.94
+GET
+307
+story-weaver-vert.vercel.app
+/login
+Jun 27 15:15:26.44
+POST
+500
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/api/generate-images-vertex
+197
+Vertex AI error: Error: All image generations failed at c (/var/task/.next/server/app/api/generate-images-vertex/route.js:3:121) at process.processTicksAndRejections (node:internal/process/task_queues:105:5) at async /var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38410 at async e_.execute (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:27879) at async e_.handle (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:39744) at async en (/var/task/node_modules/next/dist/compiled/next-server/server.runtime.prod.js:16:25332) at async ea.responseCache.get.routeKind (/var/task/node_modules/next/dist/compiled/next-server/server.runtime.prod.js:17:1028) at async r6.renderToResponseWithComponentsImpl (/var/task/node_modules/next/dist/compiled/next-server/server.runtime.prod.js:17:508) at async r6.renderPageComponent (/var/task/node_modules/next/dist/compiled/next-server/server.runtime.prod.js:17:5102) at async r6.renderToResponseImpl (/var/task/node_modules/next/dist/compiled/next-server/server.runtime.prod.js:17:5680)
+Jun 27 15:15:24.77
+POST
+200
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/api/generate-story-with-images
+4
+Failed to generate images with Vertex AI: Error: Failed to generate images: All image generations failed at m (/var/task/.next/server/app/api/generate-story-with-images/route.js:1:3303) at process.processTicksAndRejections (node:internal/process/task_queues:105:5) at async /var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38410 at async e_.execute (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:27879) at async e_.handle (/var/task/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:39744) at async en (/var/task/node_modules/next/dist/compiled/next-server/server.runtime.prod.js:16:25332) at async ea.responseCache.get.routeKind (/var/task/node_modules/next/dist/compiled/next-server/server.runtime.prod.js:17:1028) at async r6.renderToResponseWithComponentsImpl (/var/task/node_modules/next/dist/compiled/next-server/server.runtime.prod.js:17:508) at async r6.renderPageComponent (/var/task/node_modules/next/dist/compiled/next-server/server.runtime.prod.js:17:5102) at async r6.renderToResponseImpl (/var/task/node_modules/next/dist/compiled/next-server/server.runtime.prod.js:17:5680)
+Jun 27 15:15:18.12
+OPTIONS
+204
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/
+Jun 27 15:15:17.43
+GET
+200
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/dashboard
+Jun 27 15:15:17.41
+GET
+200
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/dashboard
+Jun 27 15:15:17.33
+GET
+307
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/login
+Jun 27 15:15:17.28
+GET
+200
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/api/auth/session
+Jun 27 15:15:16.97
+GET
+200
+story-weaver-git-006-add-logo-team3-7a07f490.vercel.app
+/
+Jun 27 15:15:16.00
+GET
+200
+story-weaver-39z5fouq5-team3-7a07f490.vercel.app
+/icon
+2
+Error: br, #FF6B6B, #4ECDC4): Missing ) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15632:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15661:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15651:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15643:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15716:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15640:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15828:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:16107:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:16211:0)
+Jun 27 15:15:15.93
+GET
+200
+story-weaver-39z5fouq5-team3-7a07f490.vercel.app
+/icon
+2
+Error: br, #FF6B6B, #4ECDC4): Missing ) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15632:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15661:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15651:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15643:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15716:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15640:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:15828:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:16107:0) at (node_modules/next/dist/compiled/@vercel/og/index.edge.js:16211:0)
+Jun 27 15:15:15.91
+GET
+200
+story-weaver-39z5fouq5-team3-7a07f490.vercel.app
+/login
+Jun 27 15:15:15.90
+GET
+200
+story-weaver-39z5fouq5-team3-7a07f490.vercel.app
+/api/auth/session
+Jun 27 15:15:15.88
+GET
+200
+story-weaver-39z5fouq5-team3-7a07f490.vercel.app
+/login
+Jun 27 15:15:15.87
+GET
+200
+story-weaver-39z5fouq5-team3-7a07f490.vercel.app
+/api/auth/session
+Jun 27 15:15:14.81
+GET
+200
+story-weaver-39z5fouq5-team3-7a07f490.vercel.app
+/
+Jun 27 15:15:14.76
+GET
+200
+story-weaver-39z5fouq5-team3-7a07f490.vercel.app
+/
+Jun 27 15:08:01.26
+GET
+200
+story-weaver-vert.vercel.app
+/dashboard
+Jun 27 15:08:01.07
+GET
+307
+story-weaver-vert.vercel.app
+/login

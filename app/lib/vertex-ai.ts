@@ -14,12 +14,20 @@ export class VertexAIService {
         ).toString('utf-8');
         this.credentials = JSON.parse(credentialsJson);
         console.log('Google credentials loaded successfully');
+        console.log('Credentials project_id:', this.credentials.project_id);
+        
+        // Verify project ID matches
+        if (projectId && this.credentials.project_id && projectId !== this.credentials.project_id) {
+          console.warn(`Project ID mismatch: env=${projectId}, credentials=${this.credentials.project_id}`);
+        }
       } catch (error) {
         console.error('Failed to parse GOOGLE_CREDENTIALS_BASE64:', error);
+        console.error('Credentials length:', process.env.GOOGLE_CREDENTIALS_BASE64?.length);
         throw new Error('Invalid Google credentials');
       }
     } else {
       console.error('GOOGLE_CREDENTIALS_BASE64 not found in environment');
+      console.error('Available env vars:', Object.keys(process.env).filter(k => k.startsWith('GOOGLE')));
     }
   }
 
@@ -69,6 +77,10 @@ export class VertexAIService {
       const client = await auth.getClient();
       const accessToken = await client.getAccessToken();
       console.log('Access token obtained:', !!accessToken.token);
+      
+      if (!accessToken.token) {
+        throw new Error('Failed to obtain access token');
+      }
 
       console.log('Making API request...');
       const response = await fetch(apiEndpoint, {
@@ -83,21 +95,35 @@ export class VertexAIService {
       console.log('Response headers:', Object.fromEntries(response.headers.entries()));
 
       if (!response.ok) {
-        const error = await response.text();
+        const errorText = await response.text();
         console.error('Vertex AI API error:', {
           status: response.status,
           statusText: response.statusText,
-          error: error.substring(0, 500), // Limit error message length
-          prompt: prompt.substring(0, 100)
+          error: errorText.substring(0, 1000), // Increased limit
+          prompt: prompt.substring(0, 100),
+          endpoint: apiEndpoint
         });
+        
+        // Try to parse error as JSON
+        let errorMessage = `Vertex AI API error: ${response.status}`;
+        try {
+          const errorJson = JSON.parse(errorText);
+          if (errorJson.error?.message) {
+            errorMessage = errorJson.error.message;
+          }
+        } catch {
+          // Not JSON, use status text
+        }
         
         // Check for specific error types
         if (response.status === 429) {
           throw new Error(`Rate limit exceeded - too many requests`);
         } else if (response.status === 400) {
-          throw new Error(`Invalid request - prompt may contain filtered content`);
+          throw new Error(`Invalid request - prompt may contain filtered content: ${errorMessage}`);
+        } else if (response.status === 401 || response.status === 403) {
+          throw new Error(`Authentication error: ${errorMessage}`);
         } else {
-          throw new Error(`Vertex AI API error: ${response.status}`);
+          throw new Error(errorMessage);
         }
       }
 

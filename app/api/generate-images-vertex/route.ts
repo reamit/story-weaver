@@ -8,6 +8,11 @@ export async function POST(request: NextRequest) {
 
     if (!process.env.GOOGLE_CLOUD_PROJECT_ID || !process.env.GOOGLE_CREDENTIALS_BASE64) {
       console.warn('Vertex AI not properly configured. Using fallback images.');
+      console.warn('Missing config:', {
+        hasProjectId: !!process.env.GOOGLE_CLOUD_PROJECT_ID,
+        hasCredentials: !!process.env.GOOGLE_CREDENTIALS_BASE64,
+        credentialsLength: process.env.GOOGLE_CREDENTIALS_BASE64?.length || 0
+      });
       const fallbackImages = prompts.map((prompt: string, index: number) => 
         generateFallbackImage(prompt, index, character)
       );
