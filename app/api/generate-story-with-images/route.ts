@@ -60,7 +60,12 @@ Image 6: [brief visual description for illustration]
     
     if (process.env.GOOGLE_CLOUD_PROJECT_ID) {
       try {
-        const imageResponse = await fetch(`${req.headers.get('origin')}/api/generate-images-vertex`, {
+        // Get the base URL for internal API calls
+        const protocol = req.headers.get('x-forwarded-proto') || 'https';
+        const host = req.headers.get('host') || req.headers.get('x-forwarded-host');
+        const baseUrl = host ? `${protocol}://${host}` : '';
+        
+        const imageResponse = await fetch(`${baseUrl}/api/generate-images-vertex`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
