@@ -3,6 +3,7 @@ interface StorySettingsProps {
   setGenre: (genre: string) => void;
   age: string;
   setAge: (age: string) => void;
+  disabled?: boolean;
 }
 
 const genres = [
@@ -11,7 +12,7 @@ const genres = [
   { id: 'space', name: 'Space Adventure', emoji: '🚀' }
 ];
 
-export default function StorySettings({ genre, setGenre, age, setAge }: StorySettingsProps) {
+export default function StorySettings({ genre, setGenre, age, setAge, disabled }: StorySettingsProps) {
   return (
     <div className="space-y-6">
       <div>
@@ -37,11 +38,14 @@ export default function StorySettings({ genre, setGenre, age, setAge }: StorySet
       </div>
 
       <div>
-        <h3 className="text-xl font-semibold mb-3 text-gray-800">Child's Age</h3>
+        <h3 className="text-xl font-semibold mb-3 text-gray-800">
+          Child's Age {disabled && <span className="text-sm font-normal text-gray-600">(From profile)</span>}
+        </h3>
         <select
           value={age}
           onChange={(e) => setAge(e.target.value)}
-          className="w-full md:w-auto px-4 py-2 border border-gray-300 rounded-lg text-lg"
+          disabled={disabled}
+          className="w-full md:w-auto px-4 py-2 border border-gray-300 rounded-lg text-lg disabled:bg-gray-100 disabled:cursor-not-allowed"
         >
           <option value="3">3 years old</option>
           <option value="4">4 years old</option>

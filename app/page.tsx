@@ -6,6 +6,8 @@ import StorySettings from './components/StorySettings';
 import StoryDisplay from './components/StoryDisplay';
 import LoadingState from './components/LoadingState';
 import Link from 'next/link';
+import ProfileSelector from './components/ProfileSelector';
+import { ChildProfile } from './hooks/useChildProfiles';
 
 interface Story {
   title: string;
@@ -22,6 +24,15 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [includeImages, setIncludeImages] = useState(false); // Start with images OFF to save credits
+  const [selectedProfile, setSelectedProfile] = useState<ChildProfile | null>(null);
+
+  // Update age when profile is selected
+  const handleProfileSelect = (profile: ChildProfile | null) => {
+    setSelectedProfile(profile);
+    if (profile) {
+      setAge(profile.age.toString());
+    }
+  };
 
   const generateStory = async () => {
     if (!character || !genre) {
@@ -38,7 +49,12 @@ export default function Home() {
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ character, genre, age: parseInt(age) })
+        body: JSON.stringify({ 
+          character, 
+          genre, 
+          age: parseInt(age),
+          profile: selectedProfile 
+        })
       });
 
       if (!response.ok) {
@@ -84,6 +100,25 @@ export default function Home() {
 
         {!story && !loading && (
           <>
+            <div className="mb-6 flex justify-center">
+              <ProfileSelector 
+                selectedProfile={selectedProfile}
+                onProfileSelect={handleProfileSelect}
+              />
+            </div>
+
+            {selectedProfile && (
+              <div className="mb-6 p-4 bg-purple-50 rounded-lg text-center">
+                <p className="text-purple-800">
+                  Creating a personalized story for <strong>{selectedProfile.name}</strong>
+                </p>
+                <p className="text-sm text-purple-600 mt-1">
+                  Age {selectedProfile.age} • Loves: {selectedProfile.interests.slice(0, 3).join(', ')}
+                  {selectedProfile.interests.length > 3 && ` +${selectedProfile.interests.length - 3} more`}
+                </p>
+              </div>
+            )}
+
             <CharacterSelector 
               selectedCharacter={character}
               onCharacterSelect={setCharacter}
@@ -94,6 +129,7 @@ export default function Home() {
               setGenre={setGenre}
               age={age}
               setAge={setAge}
+              disabled={!!selectedProfile}
             />
 
             <div className="mt-6 text-center">
