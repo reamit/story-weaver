@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+    if (!process.env.GOOGLE_CREDENTIALS_BASE64) {
       return NextResponse.json(
         { error: 'Google Application Credentials not configured' },
         { status: 500 }
