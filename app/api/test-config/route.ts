@@ -11,6 +11,7 @@ export async function GET() {
     vertexAI: {
       configured: !!process.env.GOOGLE_CLOUD_PROJECT_ID,
       projectId: process.env.GOOGLE_CLOUD_PROJECT_ID || 'not set',
+      credentialsBase64: process.env.GOOGLE_CREDENTIALS_BASE64 ? 'Set' : 'Not set',
       credentialsPath: process.env.GOOGLE_APPLICATION_CREDENTIALS || 'not set',
       location: process.env.VERTEX_AI_LOCATION || 'us-central1',
       credentialsExist: false // Will check file existence

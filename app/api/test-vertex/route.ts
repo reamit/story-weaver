@@ -6,7 +6,7 @@ export async function GET() {
     // Check if Vertex AI is configured
     const isConfigured = !!(
       process.env.GOOGLE_CLOUD_PROJECT_ID && 
-      process.env.GOOGLE_APPLICATION_CREDENTIALS
+      (process.env.GOOGLE_CREDENTIALS_BASE64 || process.env.GOOGLE_APPLICATION_CREDENTIALS)
     );
 
     if (!isConfigured) {
@@ -14,8 +14,9 @@ export async function GET() {
         success: false,
         configured: false,
         projectId: process.env.GOOGLE_CLOUD_PROJECT_ID ? 'Set' : 'Not set',
-        credentials: process.env.GOOGLE_APPLICATION_CREDENTIALS ? 'Set' : 'Not set',
-        message: 'Vertex AI is not configured. Please set GOOGLE_CLOUD_PROJECT_ID and GOOGLE_APPLICATION_CREDENTIALS'
+        credentialsBase64: process.env.GOOGLE_CREDENTIALS_BASE64 ? 'Set' : 'Not set',
+        credentialsFile: process.env.GOOGLE_APPLICATION_CREDENTIALS ? 'Set' : 'Not set',
+        message: 'Vertex AI is not configured. Please set GOOGLE_CLOUD_PROJECT_ID and GOOGLE_CREDENTIALS_BASE64'
       });
     }
 

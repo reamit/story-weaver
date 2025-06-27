@@ -10,8 +10,24 @@ export class VertexAIService {
   private endpoint: string;
 
   constructor() {
+    // Parse credentials from base64 if available
+    let credentials;
+    if (process.env.GOOGLE_CREDENTIALS_BASE64) {
+      try {
+        const credentialsJson = Buffer.from(
+          process.env.GOOGLE_CREDENTIALS_BASE64,
+          'base64'
+        ).toString('utf-8');
+        credentials = JSON.parse(credentialsJson);
+      } catch (error) {
+        console.error('Failed to parse GOOGLE_CREDENTIALS_BASE64:', error);
+        throw new Error('Invalid Google credentials');
+      }
+    }
+
     this.client = new PredictionServiceClient({
       apiEndpoint: `${location}-aiplatform.googleapis.com`,
+      credentials: credentials,
     });
     
     this.endpoint = `projects/${projectId}/locations/${location}/publishers/google/models/${model}`;
