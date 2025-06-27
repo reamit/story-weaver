@@ -5,6 +5,7 @@ import CharacterSelector from './components/CharacterSelector';
 import StorySettings from './components/StorySettings';
 import StoryDisplay from './components/StoryDisplay';
 import LoadingState from './components/LoadingState';
+import Link from 'next/link';
 
 interface Story {
   title: string;
@@ -69,9 +70,17 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-blue-50 to-purple-50 p-4">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-center mb-8 text-purple-800">
-          ✨ StoryWeaver ✨
-        </h1>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-4xl font-bold text-purple-800">
+            ✨ StoryWeaver ✨
+          </h1>
+          <Link 
+            href="/login" 
+            className="text-purple-600 hover:text-purple-800 font-medium"
+          >
+            Parent Login →
+          </Link>
+        </div>
 
         {!story && !loading && (
           <>
