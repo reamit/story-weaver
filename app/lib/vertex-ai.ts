@@ -21,7 +21,7 @@ export class VertexAIService {
   }
 
   async generateImage(prompt: string, style: string = 'digital art') {
-    const apiEndpoint = `https://${location}-aiplatform.googleapis.com/v1/projects/${projectId}/locations/${location}/publishers/google/models/imagegeneration:predict`;
+    const apiEndpoint = `https://${location}-aiplatform.googleapis.com/v1/projects/${projectId}/locations/${location}/publishers/google/models/imagegeneration@006:predict`;
     
     const requestBody = {
       instances: [{
