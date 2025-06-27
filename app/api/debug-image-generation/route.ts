@@ -11,6 +11,9 @@ interface TestResult {
   fullImage?: string;
   error?: string;
   stack?: string;
+  status?: number;
+  hasImages?: boolean;
+  imageCount?: number;
 }
 
 export async function GET() {
