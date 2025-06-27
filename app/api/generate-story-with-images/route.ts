@@ -65,6 +65,14 @@ Image 6: [brief visual description for illustration]
         const host = req.headers.get('host') || req.headers.get('x-forwarded-host');
         const baseUrl = host ? `${protocol}://${host}` : '';
         
+        console.log('Debug: API call details:', {
+          protocol,
+          host,
+          baseUrl,
+          fullUrl: `${baseUrl}/api/generate-images-vertex`,
+          projectId: process.env.GOOGLE_CLOUD_PROJECT_ID
+        });
+        
         const imageResponse = await fetch(`${baseUrl}/api/generate-images-vertex`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
