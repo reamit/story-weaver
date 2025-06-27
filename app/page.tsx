@@ -5,6 +5,7 @@ import CharacterSelector from './components/CharacterSelector';
 import StorySettings from './components/StorySettings';
 import StoryDisplay from './components/StoryDisplay';
 import LoadingState from './components/LoadingState';
+import EnhancedLoadingState from './components/EnhancedLoadingState';
 import Link from 'next/link';
 import ProfileSelector from './components/ProfileSelector';
 import { ChildProfile } from './hooks/useChildProfiles';
@@ -183,7 +184,7 @@ export default function Home() {
           </>
         )}
 
-        {loading && <LoadingState />}
+        {loading && (includeImages ? <EnhancedLoadingState /> : <LoadingState />)}
 
         {story && !loading && (
           <StoryDisplay 

@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { generateImageWithCache } from '@/app/lib/vertex-ai';
+import { generateFallbackImage } from '@/app/lib/fallback-images';
 
 export async function POST(request: NextRequest) {
   try {
-    const { prompts, style = 'digital art', characterSeed } = await request.json();
+    const { prompts, style = 'digital art', characterSeed, character = 'hero' } = await request.json();
 
     if (!process.env.GOOGLE_CLOUD_PROJECT_ID) {
       return NextResponse.json(
@@ -20,10 +21,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Generate images with retry logic and better error handling
-    const generateWithRetry = async (prompt: string, index: number, maxRetries = 2) => {
+    const generateWithRetry = async (prompt: string, index: number, maxRetries = 3) => {
       for (let attempt = 1; attempt <= maxRetries; attempt++) {
         try {
-          const result = await generateImageWithCache(prompt, style);
+          const result = await generateImageWithCache(prompt, style, characterSeed);
           console.log(`Successfully generated image ${index + 1} on attempt ${attempt}`);
           return result;
         } catch (err) {
@@ -31,8 +32,8 @@ export async function POST(request: NextRequest) {
           console.error(`Attempt ${attempt}/${maxRetries} failed for image ${index + 1}: "${prompt.substring(0, 50)}..."`, errorMessage);
           
           if (attempt < maxRetries) {
-            // Wait before retry with exponential backoff
-            const waitTime = 1000 * Math.pow(2, attempt - 1); // 1s, 2s, 4s...
+            // Wait before retry with longer delays
+            const waitTime = attempt * 3000; // 3s, 6s, 9s...
             console.log(`Waiting ${waitTime}ms before retry...`);
             await new Promise(resolve => setTimeout(resolve, waitTime));
           }
@@ -41,22 +42,16 @@ export async function POST(request: NextRequest) {
       return null;
     };
 
-    // Process images in batches to avoid rate limits
-    const batchSize = 2; // Process 2 images at a time
+    // Process images one at a time with longer delays for maximum reliability
     const results: (string | null)[] = [];
     
-    for (let i = 0; i < prompts.length; i += batchSize) {
-      const batch = prompts.slice(i, i + batchSize);
-      const batchPromises = batch.map((prompt: string, batchIndex: number) => 
-        generateWithRetry(prompt, i + batchIndex)
-      );
+    for (let i = 0; i < prompts.length; i++) {
+      const result = await generateWithRetry(prompts[i], i);
+      results.push(result);
       
-      const batchResults = await Promise.all(batchPromises);
-      results.push(...batchResults);
-      
-      // Add delay between batches if not the last batch
-      if (i + batchSize < prompts.length) {
-        await new Promise(resolve => setTimeout(resolve, 500));
+      // Add substantial delay between images to avoid rate limiting
+      if (i < prompts.length - 1) {
+        await new Promise(resolve => setTimeout(resolve, 3000)); // 3 second delay
       }
     }
     
@@ -69,11 +64,9 @@ export async function POST(request: NextRequest) {
       throw new Error('All image generations failed');
     }
 
-    // If some images failed, fill with placeholders
-    const finalImages = images.map(img => 
-      img || `data:image/svg+xml;base64,${Buffer.from(
-        '<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg"><rect width="512" height="512" fill="#f0f0f0"/><text x="256" y="256" text-anchor="middle" font-family="Arial" font-size="24" fill="#999">Image generation failed</text></svg>'
-      ).toString('base64')}`
+    // If some images failed, fill with beautiful fallback images
+    const finalImages = images.map((img, index) => 
+      img || generateFallbackImage(prompts[index], index, character)
     );
 
     return NextResponse.json({ images: finalImages });

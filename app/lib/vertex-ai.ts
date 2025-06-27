@@ -95,8 +95,8 @@ export class VertexAIService {
 const imageCache = new Map<string, { data: string; timestamp: number }>();
 const CACHE_TTL = 1000 * 60 * 60 * 24; // 24 hours
 
-export async function generateImageWithCache(prompt: string, style: string = 'digital art'): Promise<string> {
-  const cacheKey = `${prompt}_${style}`;
+export async function generateImageWithCache(prompt: string, style: string = 'digital art', seed?: number): Promise<string> {
+  const cacheKey = `${prompt}_${style}_${seed || ''}`;
   const cached = imageCache.get(cacheKey);
   
   if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
@@ -104,7 +104,7 @@ export async function generateImageWithCache(prompt: string, style: string = 'di
   }
   
   const vertexAI = new VertexAIService();
-  const image = await vertexAI.generateImage(prompt, style);
+  const image = await vertexAI.generateImage(prompt, style, seed);
   
   imageCache.set(cacheKey, { data: image, timestamp: Date.now() });
   
