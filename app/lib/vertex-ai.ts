@@ -21,7 +21,24 @@ export class VertexAIService {
   }
 
   async generateImage(prompt: string, style: string = 'digital art', seed?: number) {
+    console.log('=== VERTEX AI IMAGE GENERATION START ===');
+    console.log('Project ID:', projectId);
+    console.log('Location:', location);
+    console.log('Has credentials:', !!this.credentials);
+    console.log('Prompt:', prompt.substring(0, 100) + '...');
+    console.log('Style:', style);
+    console.log('Seed:', seed);
+    
+    if (!projectId) {
+      throw new Error('GOOGLE_CLOUD_PROJECT_ID is not set');
+    }
+    
+    if (!this.credentials) {
+      throw new Error('Google credentials not available');
+    }
+    
     const apiEndpoint = `https://${location}-aiplatform.googleapis.com/v1/projects/${projectId}/locations/${location}/publishers/google/models/imagegeneration:predict`;
+    console.log('API Endpoint:', apiEndpoint);
     
     const requestBody = {
       instances: [{
@@ -35,9 +52,11 @@ export class VertexAIService {
         ...(seed && { seed: seed })
       }
     };
+    console.log('Request body:', JSON.stringify(requestBody, null, 2));
 
     try {
       // Get access token using service account
+      console.log('Getting access token...');
       const { GoogleAuth } = await import('google-auth-library');
       const auth = new GoogleAuth({
         credentials: this.credentials,
@@ -45,7 +64,9 @@ export class VertexAIService {
       });
       const client = await auth.getClient();
       const accessToken = await client.getAccessToken();
+      console.log('Access token obtained:', !!accessToken.token);
 
+      console.log('Making API request...');
       const response = await fetch(apiEndpoint, {
         method: 'POST',
         headers: {
@@ -54,6 +75,8 @@ export class VertexAIService {
         },
         body: JSON.stringify(requestBody)
       });
+      console.log('Response status:', response.status);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
 
       if (!response.ok) {
         const error = await response.text();
@@ -75,17 +98,25 @@ export class VertexAIService {
       }
 
       const result = await response.json();
+      console.log('API Response:', JSON.stringify(result, null, 2));
       
       if (result.predictions && result.predictions.length > 0) {
         const prediction = result.predictions[0];
+        console.log('First prediction keys:', Object.keys(prediction));
         if (prediction.bytesBase64Encoded) {
+          console.log('Image data found, length:', prediction.bytesBase64Encoded.length);
+          console.log('=== VERTEX AI IMAGE GENERATION SUCCESS ===');
           return `data:image/png;base64,${prediction.bytesBase64Encoded}`;
         }
       }
       
+      console.error('No valid image in response');
       throw new Error('No image generated');
     } catch (error) {
-      console.error('Vertex AI prediction error:', error);
+      console.error('=== VERTEX AI IMAGE GENERATION FAILED ===');
+      console.error('Error type:', error instanceof Error ? error.constructor.name : typeof error);
+      console.error('Error message:', error instanceof Error ? error.message : String(error));
+      console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
       throw error;
     }
   }

@@ -15,6 +15,22 @@ interface StoryDisplayProps {
 export default function StoryDisplay({ story, onNewStory }: StoryDisplayProps) {
   const [currentPage, setCurrentPage] = useState(0);
 
+  // Map 6 pages to 3 images: beginning (pages 0-1), middle (pages 2-3), end (pages 4-5)
+  const getImageForPage = (pageIndex: number, totalPages: number, images: string[]) => {
+    if (images.length === 0) return '';
+    
+    // If we have 3 images for 6 pages
+    if (images.length === 3 && totalPages >= 6) {
+      if (pageIndex <= 1) return images[0]; // Beginning
+      if (pageIndex <= 3) return images[1]; // Middle
+      return images[2]; // End
+    }
+    
+    // Fallback: distribute images evenly
+    const imageIndex = Math.floor((pageIndex / totalPages) * images.length);
+    return images[Math.min(imageIndex, images.length - 1)];
+  };
+
   const nextPage = () => {
     if (currentPage < story.pages.length - 1) {
       setCurrentPage(currentPage + 1);
@@ -34,11 +50,11 @@ export default function StoryDisplay({ story, onNewStory }: StoryDisplayProps) {
       </h2>
 
       <div className="bg-white rounded-xl shadow-lg p-8 mb-6">
-        {/* Story Image */}
-        {story.images && story.images[currentPage] ? (
+        {/* Story Image - Map pages to our 3 key images */}
+        {story.images && story.images.length > 0 ? (
           <div className="mb-6 rounded-lg overflow-hidden shadow-md">
             <img 
-              src={story.images[currentPage]} 
+              src={getImageForPage(currentPage, story.pages.length, story.images)} 
               alt={`Page ${currentPage + 1} illustration`}
               className="w-full h-auto"
             />
@@ -47,7 +63,7 @@ export default function StoryDisplay({ story, onNewStory }: StoryDisplayProps) {
           <div className="mb-6 bg-gradient-to-br from-purple-100 to-blue-100 rounded-lg p-8 text-center">
             <div className="text-6xl mb-2">🎨</div>
             <p className="text-sm text-gray-600 italic">
-              Image: {story.imagePrompts[currentPage]}
+              Image: {story.imagePrompts[Math.min(currentPage, story.imagePrompts.length - 1)]}
             </p>
           </div>
         )}

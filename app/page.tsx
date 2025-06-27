@@ -82,6 +82,14 @@ export default function Home() {
         setError(`Story created, but images failed: ${data.imageError}`);
       }
       
+      // Debug logging
+      console.log('Story response:', {
+        hasImages: !!data.images,
+        imageCount: data.images?.length || 0,
+        imagePromptsCount: data.imagePrompts?.length || 0,
+        firstImage: data.images?.[0]?.substring(0, 50)
+      });
+      
       setStory(data);
     } catch (err: any) {
       setError(err.message || 'Something went wrong');
