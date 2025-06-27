@@ -269,7 +269,7 @@ export function generatePersonalizedImagePrompt(
 
   // Use the character consistency prompt system with character details
   const fullPrompt = characterDescription ? 
-    `${characterDescription} ${sceneWithCharacter}${interestElements}, ${visualTheme}, ${ageAppropriateStyle} style. ${characterDetails?.art_style_notes || ''}` :
+    `${characterDescription} ${sceneWithCharacter}${interestElements}, ${visualTheme}, ${ageAppropriateStyle} style. ${characterDetails && typeof characterDetails !== 'string' && characterDetails.art_style_notes ? characterDetails.art_style_notes : ''}` :
     createImageConsistencyPrompt(
       character,
       `${sceneWithCharacter}${interestElements}, ${visualTheme}, ${ageAppropriateStyle} style`
