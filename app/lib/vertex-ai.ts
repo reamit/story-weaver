@@ -20,18 +20,19 @@ export class VertexAIService {
     }
   }
 
-  async generateImage(prompt: string, style: string = 'digital art') {
+  async generateImage(prompt: string, style: string = 'digital art', seed?: number) {
     const apiEndpoint = `https://${location}-aiplatform.googleapis.com/v1/projects/${projectId}/locations/${location}/publishers/google/models/imagegeneration:predict`;
     
     const requestBody = {
       instances: [{
-        prompt: `${prompt}, ${style} style, children's book illustration, child-friendly, colorful, high quality`
+        prompt: `${prompt}, ${style} style, children's book illustration, child-friendly, colorful, high quality, consistent character design`
       }],
       parameters: {
         sampleCount: 1,
         aspectRatio: "1:1",
         safetyFilterLevel: "block_some",
-        personGeneration: "allow_adult"
+        personGeneration: "allow_adult",
+        ...(seed && { seed: seed })
       }
     };
 

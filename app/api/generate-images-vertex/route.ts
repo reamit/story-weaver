@@ -3,7 +3,7 @@ import { generateImageWithCache } from '@/app/lib/vertex-ai';
 
 export async function POST(request: NextRequest) {
   try {
-    const { prompts, style = 'digital art' } = await request.json();
+    const { prompts, style = 'digital art', characterSeed } = await request.json();
 
     if (!process.env.GOOGLE_CLOUD_PROJECT_ID) {
       return NextResponse.json(

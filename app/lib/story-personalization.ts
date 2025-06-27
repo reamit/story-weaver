@@ -1,5 +1,6 @@
 import { ChildProfile } from '../hooks/useChildProfiles';
 import { READING_LEVELS } from '../data/interests';
+import { generateConsistentCharacter, createDetailedCharacterPrompt, createImageConsistencyPrompt } from './character-consistency';
 
 export function generatePersonalizedStoryPrompt(
   character: string,
@@ -125,20 +126,15 @@ IMPORTANT FOR IMAGES:
 export function generatePersonalizedImagePrompt(
   basePrompt: string,
   profile?: ChildProfile | null,
-  characterDescription?: string
+  characterAppearance?: any
 ): string {
-  if (!profile) {
+  if (!profile || !characterAppearance) {
     return basePrompt;
   }
 
-  // Create consistent character description
+  // Create consistent character description using the character system
+  const character = characterAppearance || generateConsistentCharacter(profile);
   const ageAppropriateStyle = profile.age <= 5 ? 'simple, bright cartoon' : 'detailed cartoon';
-  const genderDescription = profile.gender ? 
-    `${profile.age}-year-old ${profile.gender}` : 
-    `${profile.age}-year-old child`;
-  
-  // Build character appearance details
-  const appearanceDetails = characterDescription || `${profile.name}, a ${genderDescription} with a friendly smile`;
   
   // Get primary interests for visual consistency
   const primaryInterest = profile.interests[0] || '';
@@ -147,18 +143,24 @@ export function generatePersonalizedImagePrompt(
   // Define visual theme based on interests
   const visualTheme = getVisualThemeFromInterests(profile.interests);
 
-  // Add personalization to the prompt
-  const personalizedPrompt = basePrompt
-    .replace(/main character/gi, appearanceDetails)
+  // Create the scene with consistent character
+  const sceneWithCharacter = basePrompt
+    .replace(/main character/gi, profile.name)
     .replace(/the character/gi, profile.name)
     .replace(/\[character\]/gi, profile.name);
 
-  // Add interest-based elements and visual consistency
+  // Add interest-based elements
   const interestElements = primaryInterest 
     ? `, featuring elements of ${primaryInterest}${secondaryInterest ? ` and ${secondaryInterest}` : ''}` 
     : '';
 
-  return `Children's book illustration: ${personalizedPrompt}${interestElements}, ${visualTheme}, ${ageAppropriateStyle} style, consistent character appearance throughout, child-friendly, age-appropriate for ${profile.age} year old. IMPORTANT: ${profile.name} must look exactly the same in all images with consistent clothing and appearance.`;
+  // Use the character consistency prompt system
+  const fullPrompt = createImageConsistencyPrompt(
+    character,
+    `${sceneWithCharacter}${interestElements}, ${visualTheme}, ${ageAppropriateStyle} style`
+  );
+
+  return `Children's book illustration in consistent style: ${fullPrompt}`;
 }
 
 export function createCharacterReference(profile: ChildProfile): string {

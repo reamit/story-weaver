@@ -1,5 +1,6 @@
 import Groq from 'groq-sdk';
-import { generatePersonalizedStoryPrompt, generatePersonalizedImagePrompt, createCharacterReference } from '@/app/lib/story-personalization';
+import { generatePersonalizedStoryPrompt, generatePersonalizedImagePrompt } from '@/app/lib/story-personalization';
+import { generateConsistentCharacter } from '@/app/lib/character-consistency';
 import { ChildProfile } from '@/app/hooks/useChildProfiles';
 
 const groq = new Groq({
@@ -55,24 +56,37 @@ export async function POST(req: Request) {
           projectId: process.env.GOOGLE_CLOUD_PROJECT_ID
         });
         
-        // Create consistent character description for all images
-        const characterDescription = profile ? createCharacterReference(profile as ChildProfile) : null;
+        // Create consistent character appearance for all images
+        const characterAppearance = profile ? generateConsistentCharacter(profile as ChildProfile) : null;
 
-        // Personalize image prompts if profile is provided
+        // Personalize image prompts if profile is provided with consistent character
         const personalizedPrompts = profile 
-          ? imagePrompts.map(prompt => generatePersonalizedImagePrompt(
-              prompt, 
-              profile as ChildProfile,
-              characterDescription || undefined
-            ))
+          ? imagePrompts.map((prompt, index) => {
+              // Add specific instructions for first image to establish character
+              const enhancedPrompt = index === 0 
+                ? `FIRST IMAGE - ESTABLISH CHARACTER: ${prompt}. This is the first appearance of ${profile.name}, so clearly show all details.`
+                : `${prompt}. MAINTAIN EXACT SAME appearance of ${profile.name} from the first image.`;
+              
+              return generatePersonalizedImagePrompt(
+                enhancedPrompt, 
+                profile as ChildProfile,
+                characterAppearance
+              );
+            })
           : imagePrompts;
+
+        // Generate a consistent seed for this story session
+        const characterSeed = profile ? 
+          profile.name.charCodeAt(0) * 1000 + profile.age * 100 + profile.interests.length : 
+          undefined;
 
         const imageResponse = await fetch(`${baseUrl}/api/generate-images-vertex`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             prompts: personalizedPrompts,
-            style: 'cartoon'
+            style: 'cartoon',
+            characterSeed
           })
         });
 
