@@ -1,0 +1,9 @@
+Options
+0. Check in to the repository
+1. Integrate with Google Vertex AI for image generation
+2. Prepare a list of books for themes and put it in an md file
+3. Time input
+4. Authentication
+5. Audio
+6. Localization
+7. Add more characters and themes
