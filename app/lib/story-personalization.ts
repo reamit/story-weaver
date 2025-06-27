@@ -1,6 +1,8 @@
 import { ChildProfile } from '../hooks/useChildProfiles';
 import { READING_LEVELS } from '../data/interests';
 import { generateConsistentCharacter, createDetailedCharacterPrompt, createImageConsistencyPrompt } from './character-consistency';
+import { CHARACTER_DETAILS, getCharacterImagePrompt, getCharacterConsistencyPrompt } from '../data/character-details';
+import { getThemeById, getThemePromptElements } from '../data/story-themes';
 
 function generatePageTemplate(
   readingLevel: string, 
@@ -72,12 +74,17 @@ export function generatePersonalizedStoryPrompt(
   age: number,
   profile?: ChildProfile | null
 ): string {
+  // Get theme details
+  const theme = getThemeById(genre);
+  const { setting, plotElement } = getThemePromptElements(genre);
   if (!profile) {
     // Default prompt without personalization
+    const characterDetails = CHARACTER_DETAILS[character];
     return `
 You are a children's book author. Create a 6-page story with these requirements:
-- Main character: ${character}
-- Setting: ${genre} 
+- Main character: ${characterDetails?.name || character} (${characterDetails?.core_identity || character})
+- Setting: ${theme?.name || genre} - specifically in a ${setting}
+- Plot element: ${plotElement}
 - Age group: ${age} years old
 - Each page: 2-3 simple sentences
 - Include a gentle moral about friendship, kindness, or courage
@@ -165,10 +172,16 @@ CHILD PROFILE:
 - Primary Interests: ${primaryInterests}
 - All Interests: ${allInterests.join(', ')}
 
+CHARACTER DETAILS:
+${CHARACTER_DETAILS[character] ? `${profile.name} is a ${CHARACTER_DETAILS[character].core_identity}. ${CHARACTER_DETAILS[character].physical_features.description}.` : `${profile.name} is the ${character}.`}
+
 STORY REQUIREMENTS:
 - Make ${profile.name} the main character of the story
 - Main character type: ${character} (but named ${profile.name})
-- Setting: Adapt the ${genre} setting to incorporate ${primaryInterests}
+- Character personality: ${CHARACTER_DETAILS[character]?.core_identity || character}
+- Setting: ${theme?.name || genre} - specifically in a ${setting}
+- Plot element: Include ${plotElement} in the story
+- Adapt the setting to incorporate ${primaryInterests}
 - Story length: ${pageStructure}
 - Each page MUST follow: ${sentenceStructure}
 - Vocabulary requirements: ${vocabularyGuide}
@@ -207,13 +220,14 @@ ${generatePageTemplate(profile.readingLevel, profile.name, primaryInterests, all
 IMPORTANT FOR IMAGES: 
 - Every image MUST show ${profile.name} with the same appearance
 - Every scene MUST incorporate elements from their interests
-- The ${genre} setting should be adapted to include ${primaryInterests} themes`;
+- The ${theme?.name || genre} setting should be adapted to include ${primaryInterests} themes`;
 }
 
 export function generatePersonalizedImagePrompt(
   basePrompt: string,
   profile?: ChildProfile | null,
-  characterAppearance?: any
+  characterAppearance?: any,
+  characterType?: string
 ): string {
   if (!profile || !characterAppearance) {
     return basePrompt;
@@ -222,6 +236,18 @@ export function generatePersonalizedImagePrompt(
   // Create consistent character description using the character system
   const character = characterAppearance || generateConsistentCharacter(profile);
   const ageAppropriateStyle = profile.age <= 5 ? 'simple, bright cartoon' : 'detailed cartoon';
+  
+  // Get character details if available
+  const characterDetails = characterType && CHARACTER_DETAILS[characterType];
+  let characterDescription = '';
+  
+  if (characterDetails && profile) {
+    // Merge child appearance with character details
+    characterDescription = `${profile.name} as a ${characterDetails.name}: ${characterDetails.core_identity}. 
+    ${profile.name} has the appearance of a ${profile.age}-year-old ${profile.gender || 'child'} but dressed as the ${characterDetails.name}.
+    Wearing: ${Object.values(characterDetails.clothing).join(', ')}.
+    ${characterDetails.equipment ? `Equipment: ${characterDetails.equipment.join(', ')}.` : ''}`;
+  }
   
   // Get primary interests for visual consistency
   const primaryInterest = profile.interests[0] || '';
@@ -241,11 +267,13 @@ export function generatePersonalizedImagePrompt(
     ? `, featuring elements of ${primaryInterest}${secondaryInterest ? ` and ${secondaryInterest}` : ''}` 
     : '';
 
-  // Use the character consistency prompt system
-  const fullPrompt = createImageConsistencyPrompt(
-    character,
-    `${sceneWithCharacter}${interestElements}, ${visualTheme}, ${ageAppropriateStyle} style`
-  );
+  // Use the character consistency prompt system with character details
+  const fullPrompt = characterDescription ? 
+    `${characterDescription} ${sceneWithCharacter}${interestElements}, ${visualTheme}, ${ageAppropriateStyle} style. ${characterDetails && typeof characterDetails !== 'string' && characterDetails.art_style_notes ? characterDetails.art_style_notes : ''}` :
+    createImageConsistencyPrompt(
+      character,
+      `${sceneWithCharacter}${interestElements}, ${visualTheme}, ${ageAppropriateStyle} style`
+    );
 
   return `Children's book illustration in consistent style: ${fullPrompt}`;
 }

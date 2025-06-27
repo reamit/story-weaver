@@ -1,3 +1,4 @@
+import { CHARACTER_DETAILS } from '../data/character-details';
 import SpotlightCard from './SpotlightCard/SpotlightCard';
 import Image from 'next/image';
 
@@ -6,14 +7,63 @@ interface CharacterSelectorProps {
   onCharacterSelect: (character: string) => void;
 }
 
-const characters = [
-  { id: 'princess', name: 'Princess', image: '/assets/transparent/princess.png', spotlightColor: 'rgba(253, 0, 127, 0.5)', bgGradient: 'bg-gradient-to-br from-pink-200 to-pink-300' },
-  { id: 'knight', name: 'Knight', image: '/assets/transparent/knight.png', spotlightColor: 'rgba(59, 130, 246, 0.5)', bgGradient: 'bg-gradient-to-br from-blue-200 to-blue-300' },
-  { id: 'dragon', name: 'Dragon', image: '/assets/transparent/dragon.png', spotlightColor: 'rgba(34, 197, 94, 0.5)', bgGradient: 'bg-gradient-to-br from-green-200 to-green-300' },
-  { id: 'wizard', name: 'Wizard', image: '/assets/transparent/wizard.png', spotlightColor: 'rgba(147, 51, 234, 0.5)', bgGradient: 'bg-gradient-to-br from-purple-200 to-purple-300' },
-  { id: 'cat', name: 'Magic Cat', image: '/assets/transparent/cat.png', spotlightColor: 'rgba(191, 80, 0, 0.5)', bgGradient: 'bg-gradient-to-br from-orange-200 to-orange-300' },
-  { id: 'mouse', name: 'Brave Mouse', image: '/assets/transparent/mouse.png', spotlightColor: 'rgba(107, 114, 128, 0.5)', bgGradient: 'bg-gradient-to-br from-gray-200 to-gray-300' }
-];
+// Map character IDs to display information with your original styling
+const characters = Object.entries(CHARACTER_DETAILS).map(([id, details]) => {
+  // Use your original character styling
+  const styleMap: Record<string, { image: string; spotlightColor: string; bgGradient: string; displayName: string }> = {
+    princess: { 
+      image: '/assets/transparent/princess.png', 
+      spotlightColor: 'rgba(253, 0, 127, 0.5)', 
+      bgGradient: 'bg-gradient-to-br from-pink-200 to-pink-300',
+      displayName: 'Princess'
+    },
+    knight: { 
+      image: '/assets/transparent/knight.png', 
+      spotlightColor: 'rgba(59, 130, 246, 0.5)', 
+      bgGradient: 'bg-gradient-to-br from-blue-200 to-blue-300',
+      displayName: 'Knight'
+    },
+    dragon: { 
+      image: '/assets/transparent/dragon.png', 
+      spotlightColor: 'rgba(34, 197, 94, 0.5)', 
+      bgGradient: 'bg-gradient-to-br from-green-200 to-green-300',
+      displayName: 'Dragon'
+    },
+    wizard: { 
+      image: '/assets/transparent/wizard.png', 
+      spotlightColor: 'rgba(147, 51, 234, 0.5)', 
+      bgGradient: 'bg-gradient-to-br from-purple-200 to-purple-300',
+      displayName: 'Wizard'
+    },
+    cat: { 
+      image: '/assets/transparent/cat.png', 
+      spotlightColor: 'rgba(191, 80, 0, 0.5)', 
+      bgGradient: 'bg-gradient-to-br from-orange-200 to-orange-300',
+      displayName: 'Magic Cat'
+    },
+    mouse: { 
+      image: '/assets/transparent/mouse.png', 
+      spotlightColor: 'rgba(107, 114, 128, 0.5)', 
+      bgGradient: 'bg-gradient-to-br from-gray-200 to-gray-300',
+      displayName: 'Brave Mouse'
+    }
+  };
+  
+  const style = styleMap[id] || { 
+    image: '/assets/transparent/princess.png',
+    spotlightColor: 'rgba(147, 51, 234, 0.5)', 
+    bgGradient: 'bg-gradient-to-br from-purple-200 to-purple-300',
+    displayName: details.name
+  };
+  
+  return {
+    id,
+    name: style.displayName,
+    image: style.image,
+    spotlightColor: style.spotlightColor,
+    bgGradient: style.bgGradient
+  };
+});
 
 export default function CharacterSelector({ selectedCharacter, onCharacterSelect }: CharacterSelectorProps) {
   return (

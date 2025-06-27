@@ -70,7 +70,8 @@ export async function POST(req: Request) {
               return generatePersonalizedImagePrompt(
                 enhancedPrompt, 
                 profile as ChildProfile,
-                characterAppearance
+                characterAppearance,
+                character // Pass the character type
               );
             })
           : imagePrompts;
