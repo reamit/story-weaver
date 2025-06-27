@@ -121,7 +121,6 @@ IMPORTANT FOR IMAGES:
 - Every scene MUST incorporate elements from their interests
 - The ${genre} setting should be adapted to include ${primaryInterests} themes`;
 }
-}
 
 export function generatePersonalizedImagePrompt(
   basePrompt: string,
