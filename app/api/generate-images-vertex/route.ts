@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     }
     
     // Generate images with retry logic and better error handling
-    const generateWithRetry = async (prompt: string, index: number, maxRetries = 3) => {
+    const generateWithRetry = async (prompt: string, index: number, maxRetries = 2) => {
       for (let attempt = 1; attempt <= maxRetries; attempt++) {
         try {
           const result = await generateImageWithCache(prompt, style, characterSeed);
@@ -50,8 +50,8 @@ export async function POST(request: NextRequest) {
           }
           
           if (attempt < maxRetries) {
-            // Wait before retry with longer delays
-            const waitTime = attempt * 3000; // 3s, 6s, 9s...
+            // Wait before retry with exponential backoff
+            const waitTime = Math.min(attempt * 5000, 15000); // 5s, 10s, 15s max
             console.log(`Waiting ${waitTime}ms before retry...`);
             await new Promise(resolve => setTimeout(resolve, waitTime));
           }
@@ -83,8 +83,9 @@ export async function POST(request: NextRequest) {
       
       // Add substantial delay between images to avoid rate limiting
       if (i < prompts.length - 1) {
-        console.log(`Waiting 3 seconds before next image...`);
-        await new Promise(resolve => setTimeout(resolve, 3000)); // 3 second delay
+        const delayTime = 5000; // 5 seconds between images
+        console.log(`Waiting ${delayTime}ms before next image...`);
+        await new Promise(resolve => setTimeout(resolve, delayTime));
       }
     }
     
