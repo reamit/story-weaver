@@ -7,7 +7,7 @@ export async function POST(request: NextRequest) {
   try {
     const { prompt = "A brave little dragon named Ember discovering a magical crystal in a forest" } = await request.json();
     
-    const results = {
+    const results: any = {
       prompt,
       attempts: [] as any[]
     };
