@@ -105,7 +105,7 @@ export default function EnhancedLoadingState() {
       </div>
 
       {/* Current Step */}
-      <h2 className="text-2xl font-bold text-purple-800 mb-2">
+      <h2 className="text-2xl font-bold gradient-text mb-2">
         {currentStepData.label}
       </h2>
 
@@ -113,7 +113,7 @@ export default function EnhancedLoadingState() {
       <div className="w-full max-w-md mb-4">
         <div className="bg-gray-200 rounded-full h-3 overflow-hidden">
           <div 
-            className="bg-gradient-to-r from-purple-500 to-pink-500 h-full rounded-full transition-all duration-300 ease-out"
+            className="bg-gradient-to-r from-teal-500 to-rose-500 h-full rounded-full transition-all duration-300 ease-out"
             style={{ width: `${progress}%` }}
           >
             <div className="h-full bg-white/30 animate-pulse"></div>
@@ -136,9 +136,9 @@ export default function EnhancedLoadingState() {
             key={step.id}
             className={`w-2 h-2 rounded-full transition-all duration-300 ${
               index < currentStep
-                ? 'bg-purple-600 w-8'
+                ? 'bg-teal-600 w-8'
                 : index === currentStep
-                ? 'bg-purple-400 animate-pulse'
+                ? 'bg-teal-400 animate-pulse'
                 : 'bg-gray-300'
             }`}
           />
@@ -146,8 +146,8 @@ export default function EnhancedLoadingState() {
       </div>
 
       {/* Fun Fact */}
-      <div className="bg-purple-50 rounded-lg p-4 max-w-md text-center">
-        <p className="text-purple-700 text-sm">
+      <div className="bg-gradient-to-br from-teal-50 to-rose-50 rounded-xl p-4 max-w-md text-center border border-gray-100">
+        <p className="text-gray-700 text-sm font-medium">
           <span className="font-semibold">✨ {funFact}</span>
         </p>
       </div>

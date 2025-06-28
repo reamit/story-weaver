@@ -41,8 +41,8 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center">
-        <div className="text-purple-600">Loading...</div>
+      <div className="min-h-screen bg-gradient-to-br from-teal-50 via-white to-rose-50 flex items-center justify-center">
+        <div className="text-teal-600 font-medium animate-pulse">Loading...</div>
       </div>
     );
   }
@@ -74,12 +74,12 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-100 to-pink-100">
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-white to-rose-50">
       <div className="container mx-auto px-4 py-8">
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div className="card-elevated p-8 animate-fadeIn">
           <div className="flex justify-between items-center mb-8">
             <Logo />
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-gray-500 font-medium">
               Logged in as: {user.email}
             </div>
           </div>
@@ -87,13 +87,13 @@ export default function DashboardPage() {
           {!showForm && (
             <div className="space-y-6">
               <div className="flex justify-between items-center">
-                <h2 className="text-xl font-semibold text-gray-800">Children Profiles</h2>
+                <h2 className="text-2xl font-bold text-gray-800">Children Profiles</h2>
                 <button
                   onClick={() => {
                     setEditingProfile(null);
                     setShowForm(true);
                   }}
-                  className="flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-purple-700 transition-colors"
+                  className="btn btn-primary flex items-center gap-2"
                 >
                   <Plus size={20} />
                   Add Child
@@ -101,7 +101,7 @@ export default function DashboardPage() {
               </div>
 
               {profiles.length === 0 ? (
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-12 text-center">
+                <div className="border-2 border-dashed border-gray-200 rounded-xl p-12 text-center bg-gray-50/50">
                   <h3 className="text-lg font-semibold text-gray-700 mb-4">
                     No Children Profiles Yet
                   </h3>
@@ -112,13 +112,13 @@ export default function DashboardPage() {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {profiles.map(profile => (
-                    <div key={profile.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <div key={profile.id} className="card p-4 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                       <h3 className="text-lg font-semibold text-gray-800 mb-2">{profile.name}</h3>
                       <p className="text-sm text-gray-600">Age: {profile.age}</p>
                       <p className="text-sm text-gray-600 mb-2">Reading: {profile.readingLevel?.replace('-', ' ')}</p>
                       <div className="flex flex-wrap gap-1 mb-4">
                         {profile.interests.slice(0, 3).map(interest => (
-                          <span key={interest} className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">
+                          <span key={interest} className="text-xs bg-teal-100 text-teal-700 px-2 py-1 rounded-full font-medium">
                             {interest}
                           </span>
                         ))}
@@ -129,21 +129,21 @@ export default function DashboardPage() {
                       <div className="flex gap-2">
                         <button
                           onClick={() => setViewingProfile(profile)}
-                          className="flex-1 flex items-center justify-center gap-1 bg-blue-100 text-blue-700 py-1 px-2 rounded hover:bg-blue-200 transition-colors"
+                          className="flex-1 flex items-center justify-center gap-1 bg-blue-50 text-blue-600 py-1.5 px-2 rounded-lg hover:bg-blue-100 transition-all duration-200 font-medium text-sm"
                         >
                           <Eye size={16} />
                           View
                         </button>
                         <button
                           onClick={() => handleEdit(profile)}
-                          className="flex-1 flex items-center justify-center gap-1 bg-green-100 text-green-700 py-1 px-2 rounded hover:bg-green-200 transition-colors"
+                          className="flex-1 flex items-center justify-center gap-1 bg-emerald-50 text-emerald-600 py-1.5 px-2 rounded-lg hover:bg-emerald-100 transition-all duration-200 font-medium text-sm"
                         >
                           <Edit2 size={16} />
                           Edit
                         </button>
                         <button
                           onClick={() => handleDelete(profile.id)}
-                          className="flex-1 flex items-center justify-center gap-1 bg-red-100 text-red-700 py-1 px-2 rounded hover:bg-red-200 transition-colors"
+                          className="flex-1 flex items-center justify-center gap-1 bg-red-50 text-red-600 py-1.5 px-2 rounded-lg hover:bg-red-100 transition-all duration-200 font-medium text-sm"
                         >
                           <Trash2 size={16} />
                           Delete
@@ -155,7 +155,7 @@ export default function DashboardPage() {
               )}
 
               <div className="flex justify-between items-center pt-6 border-t">
-                <Link href="/" className="text-purple-600 hover:text-purple-800 font-medium">
+                <Link href="/" className="text-teal-600 hover:text-teal-700 font-medium transition-colors">
                   ← Back to Home
                 </Link>
                 <button 
@@ -163,7 +163,7 @@ export default function DashboardPage() {
                     await fetch('/api/auth/logout', { method: 'POST' });
                     window.location.href = '/login';
                   }}
-                  className="text-gray-600 hover:text-gray-800"
+                  className="text-gray-500 hover:text-gray-700 font-medium transition-colors"
                 >
                   Logout
                 </button>
@@ -173,7 +173,7 @@ export default function DashboardPage() {
 
           {showForm && (
             <div>
-              <h2 className="text-xl font-semibold text-gray-800 mb-6">
+              <h2 className="text-2xl font-bold text-gray-800 mb-6">
                 {editingProfile ? 'Edit Child Profile' : 'Create Child Profile'}
               </h2>
               <ChildProfileForm

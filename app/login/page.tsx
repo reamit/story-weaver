@@ -37,15 +37,15 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-100 to-pink-100">
-      <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-50 via-white to-rose-50">
+      <div className="card-elevated p-8 w-full max-w-md animate-scaleIn">
         <div className="flex justify-center mb-8">
           <Logo linkToHome={false} />
         </div>
         
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
               Email Address
             </label>
             <input
@@ -54,14 +54,14 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="parent@example.com"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="input text-base"
               required
               disabled={loading}
             />
           </div>
 
           {error && (
-            <div className="text-red-600 text-sm text-center">
+            <div className="text-red-600 text-sm text-center animate-fadeIn">
               {error}
             </div>
           )}
@@ -69,7 +69,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full btn btn-primary py-3 text-base font-semibold gradient-primary"
           >
             {loading ? 'Logging in...' : 'Continue'}
           </button>

@@ -67,11 +67,11 @@ export default function StoryDisplay({ story, onNewStory }: StoryDisplayProps) {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h2 className="text-3xl font-bold text-center mb-8 text-purple-800">
+      <h2 className="text-4xl font-serif font-bold text-center mb-8 gradient-text">
         {story.title}
       </h2>
 
-      <div className="bg-white rounded-xl shadow-lg p-8 mb-6">
+      <div className="card-elevated p-8 mb-6 animate-fadeIn">
         {/* Story Image - Map pages to our 3 key images */}
         {(() => {
           const currentImage = story.images && story.images.length > 0 ? 
@@ -94,16 +94,16 @@ export default function StoryDisplay({ story, onNewStory }: StoryDisplayProps) {
             />
           </div>
         ) : (
-          <div className="mb-6 bg-gradient-to-br from-purple-100 to-blue-100 rounded-lg p-8 text-center">
+          <div className="mb-6 bg-gradient-to-br from-teal-50 to-rose-50 rounded-xl p-8 text-center border border-gray-100">
             <div className="text-6xl mb-2">🎨</div>
-            <p className="text-sm text-gray-600 italic">
+            <p className="text-sm text-gray-500 italic font-medium">
               Image: {story.imagePrompts[Math.min(currentPage, story.imagePrompts.length - 1)]}
             </p>
           </div>
         )}
 
         {/* Story text */}
-        <p className="text-lg leading-relaxed text-gray-800 mb-6">
+        <p className="text-lg leading-relaxed text-gray-700 mb-6 font-serif">
           {story.pages[currentPage]}
         </p>
 
@@ -118,7 +118,7 @@ export default function StoryDisplay({ story, onNewStory }: StoryDisplayProps) {
         <button
           onClick={prevPage}
           disabled={currentPage === 0}
-          className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+          className="btn btn-secondary px-6 py-2"
         >
           ← Previous
         </button>
@@ -126,7 +126,7 @@ export default function StoryDisplay({ story, onNewStory }: StoryDisplayProps) {
         <button
           onClick={nextPage}
           disabled={currentPage === story.pages.length - 1}
-          className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+          className="btn btn-secondary px-6 py-2"
         >
           Next →
         </button>
@@ -136,7 +136,7 @@ export default function StoryDisplay({ story, onNewStory }: StoryDisplayProps) {
       <div className="text-center">
         <button
           onClick={onNewStory}
-          className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+          className="btn btn-primary px-6 py-2 gradient-warm"
         >
           Create New Story ✨
         </button>

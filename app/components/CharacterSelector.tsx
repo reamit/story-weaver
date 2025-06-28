@@ -68,7 +68,7 @@ const characters = Object.entries(CHARACTER_DETAILS).map(([id, details]) => {
 export default function CharacterSelector({ selectedCharacter, onCharacterSelect }: CharacterSelectorProps) {
   return (
     <div className="mb-8">
-      <h2 className="text-2xl font-semibold text-center mb-6 text-gray-800">
+      <h2 className="text-3xl font-semibold text-center mb-8 bg-gradient-to-r from-teal-600 to-rose-600 bg-clip-text text-transparent">
         Choose Your Hero
       </h2>
       <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
@@ -79,13 +79,13 @@ export default function CharacterSelector({ selectedCharacter, onCharacterSelect
             bgGradient={char.bgGradient}
             className={`cursor-pointer transition-all duration-300 ${
               selectedCharacter === char.id
-                ? 'ring-4 ring-blue-400 shadow-2xl scale-105'
-                : 'hover:scale-102'
+                ? 'ring-4 ring-teal-400 shadow-2xl scale-110 transform'
+                : 'hover:scale-105 hover:shadow-lg'
             }`}
           >
             <button
               onClick={() => onCharacterSelect(char.id)}
-              className="w-full h-full flex flex-col items-center justify-center"
+              className="w-full h-full flex flex-col items-center justify-center p-4"
             >
               <div className="w-[10rem] h-[10rem] mb-3 relative">
                 <Image
@@ -95,7 +95,7 @@ export default function CharacterSelector({ selectedCharacter, onCharacterSelect
                   className="object-contain"
                 />
               </div>
-              <div className="text-gray-700 font-medium text-lg">{char.name}</div>
+              <div className="text-gray-800 font-semibold text-lg">{char.name}</div>
             </button>
           </SpotlightCard>
         ))}

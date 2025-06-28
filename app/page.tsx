@@ -126,28 +126,28 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-purple-200 p-4 flex items-center justify-center">
-      <div className="max-w-6xl w-full bg-purple-100 rounded-3xl p-8 shadow-lg">
+    <main className="min-h-screen bg-gradient-to-br from-teal-50 via-white to-rose-50 p-4 flex items-center justify-center">
+      <div className="max-w-6xl w-full bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-white/50">
         {/* Merged: Logo from HEAD + StoryWeaver title from master */}
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-4">
             <Logo />
-            <h1 className="text-6xl font-modak text-purple-800">
-              ✨ StoryWeaver ✨
+            <h1 className="text-6xl font-display gradient-text">
+              StoryWeaver
             </h1>
           </div>
           {/* Merged: Conditional login/dashboard link from HEAD */}
           {isLoggedIn ? (
             <Link 
               href="/dashboard" 
-              className="text-purple-600 hover:text-purple-800 font-medium bg-white px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+              className="btn btn-secondary"
             >
               Parent Dashboard →
             </Link>
           ) : (
             <Link 
               href="/login" 
-              className="text-purple-600 hover:text-purple-800 font-medium bg-white px-4 py-2 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+              className="btn btn-secondary"
             >
               Parent Login →
             </Link>
@@ -178,15 +178,15 @@ export default function Home() {
               
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2">
-                  <span className="text-gray-700">Include AI-generated images</span>
+                  <span className="text-gray-600 font-medium">Include AI-generated images</span>
                   <button
                     onClick={() => setIncludeImages(!includeImages)}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                      includeImages ? 'bg-purple-600' : 'bg-gray-300'
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-all duration-300 ${
+                      includeImages ? 'bg-teal-600' : 'bg-gray-300'
                     }`}
                   >
                     <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-all duration-300 shadow-sm ${
                         includeImages ? 'translate-x-6' : 'translate-x-1'
                       }`}
                     />
@@ -196,15 +196,15 @@ export default function Home() {
                 <button
                   onClick={generateStory}
                   disabled={!character || !genre}
-                  className="px-8 py-3 bg-purple-600 text-white rounded-2xl font-semibold text-lg hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                  className="btn btn-primary px-8 py-3 text-lg font-semibold rounded-xl gradient-primary"
                 >
-                  Generate Story ✨
+                  Generate Story
                 </button>
               </div>
             </div>
 
             {error && (
-              <div className="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+              <div className="mt-4 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg animate-fadeIn">
                 {error}
               </div>
             )}
