@@ -49,12 +49,13 @@ export class VertexAIService {
     }
     
     // Updated to use the correct Imagen model endpoint
-    const apiEndpoint = `https://${location}-aiplatform.googleapis.com/v1/projects/${projectId}/locations/${location}/publishers/google/models/imagegeneration@006:predict`;
+    const apiEndpoint = `https://${location}-aiplatform.googleapis.com/v1/projects/${projectId}/locations/${location}/publishers/google/models/imagen-3.0-fast-generate-001:predict`;
     console.log('API Endpoint:', apiEndpoint);
     
     const requestBody = {
       instances: [{
-        prompt: `${prompt}, ${style} style, children's book illustration, bright colors, whimsical, playful, suitable for young children`
+        prompt: `${prompt}, ${style} style, storybook illustration, whimsical, playful, family-friendly and age-appropriate, fantasy adventure theme`,
+        negativePrompt: "child, kid, baby, toddler, minor"
       }],
       parameters: {
         sampleCount: 1,
