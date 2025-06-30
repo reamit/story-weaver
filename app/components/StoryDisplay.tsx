@@ -37,11 +37,16 @@ export default function StoryDisplay({ story, onNewStory }: StoryDisplayProps) {
   }
   console.log('=== END STORY DISPLAY DEBUG ===');
 
-  // Map 6 pages to 3 images: beginning (pages 0-1), middle (pages 2-3), end (pages 4-5)
+  // Map pages to images: 1:1 when possible, distribute evenly otherwise
   const getImageForPage = (pageIndex: number, totalPages: number, images: string[]) => {
     if (images.length === 0) return '';
     
-    // If we have 3 images for 6 pages
+    // If we have equal or more images than pages, use 1:1 mapping
+    if (images.length >= totalPages) {
+      return images[pageIndex] || images[0];
+    }
+    
+    // Legacy support: If we have 3 images for 6 pages (from old stories)
     if (images.length === 3 && totalPages >= 6) {
       if (pageIndex <= 1) return images[0]; // Beginning
       if (pageIndex <= 3) return images[1]; // Middle
@@ -72,7 +77,7 @@ export default function StoryDisplay({ story, onNewStory }: StoryDisplayProps) {
       </h2>
 
       <div className="card-elevated p-8 mb-6 animate-fadeIn">
-        {/* Story Image - Map pages to our 3 key images */}
+        {/* Story Image - Show unique image per page when available */}
         {(() => {
           const currentImage = story.images && story.images.length > 0 ? 
             getImageForPage(currentPage, story.pages.length, story.images) : null;

@@ -38,15 +38,7 @@ export async function POST(req: Request) {
     const imageMatches = content.match(/Image \d+: (.+)/g) || [];
     let imagePrompts = imageMatches.map(match => match.replace(/Image \d+: /, '').trim());
     
-    // Reduce to 3 key images for reliability: beginning, middle, end
-    if (imagePrompts.length > 3) {
-      const keyImages = [
-        imagePrompts[0], // First image - establish character
-        imagePrompts[Math.floor(imagePrompts.length / 2)], // Middle image - main action
-        imagePrompts[imagePrompts.length - 1] // Last image - resolution
-      ];
-      imagePrompts = keyImages;
-    }
+    // Generate images for all pages (up to 6 images for complete visual storytelling)
 
     // Generate images using Google Vertex AI
     let images: string[] = [];
@@ -124,11 +116,7 @@ export async function POST(req: Request) {
             });
           });
           
-          // Ensure we have exactly 3 images to match our reduced prompts
-          if (images.length > 3) {
-            console.log(`Trimming images from ${images.length} to 3`);
-            images = images.slice(0, 3);
-          }
+          // Keep all generated images (up to 6 for complete page coverage)
         } else {
           const errorData = await imageResponse.json();
           console.error('Vertex AI image generation failed:', errorData);
