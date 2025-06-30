@@ -141,8 +141,8 @@ export class VertexAIService {
     const parameter = {
       sampleCount: 1,
       aspectRatio: '1:1',
-      safetyFilterLevel: 'block_few',
-      personGeneration: 'allow_adult',
+      safetyFilterLevel: 'block_none',
+      personGeneration: 'allow_all',
     };
     
     const parameters = google.protobuf.Value.fromObject(parameter);

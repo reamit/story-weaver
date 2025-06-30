@@ -60,8 +60,8 @@ export class VertexAIService {
       parameters: {
         sampleCount: 1,
         aspectRatio: "1:1",
-        safetyFilterLevel: "block_few",
-        personGeneration: "allow_adult",
+        safetyFilterLevel: "block_none",
+        personGeneration: "allow_all",
         ...(seed && { seed: seed })
       }
     };

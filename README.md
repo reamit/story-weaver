@@ -46,5 +46,15 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed instructions on deploying to V
 - 6 character options
 - 3 genre settings
 - Age-appropriate content
-- 6-page stories with illustrations
+- 6-page stories with unique illustrations (1 per page)
 - Mobile-responsive design
+
+## 🎨 Image Generation
+
+> **Recent Update**: Image generation has been enhanced for better visual storytelling:
+> 
+> - **Current**: Up to 6 unique images (1 per page) for complete visual coverage
+> - **Previous**: 3 key images distributed across 6 pages (beginning/middle/end)
+> - **Benefit**: Each page now has its own unique illustration, creating a richer reading experience
+> 
+> The system automatically falls back to the previous behavior for older stories to maintain compatibility.

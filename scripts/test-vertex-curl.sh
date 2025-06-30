@@ -52,7 +52,7 @@ REQUEST_BODY='{
     "sampleCount": 1,
     "aspectRatio": "1:1",
     "safetyFilterLevel": "block_some",
-    "personGeneration": "allow_adult"
+    "personGeneration": "allow_all"
   }
 }'
 
