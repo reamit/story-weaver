@@ -35,7 +35,7 @@ export default function ProfileSelector({ selectedProfile, onProfileSelect }: Pr
     return (
       <Link 
         href="/login"
-        className="inline-flex items-center gap-2 px-4 py-2 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors"
+        className="btn btn-secondary"
       >
         <Plus size={20} />
         Create Child Profile
@@ -47,7 +47,7 @@ export default function ProfileSelector({ selectedProfile, onProfileSelect }: Pr
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-purple-300 rounded-lg hover:border-purple-400 transition-colors"
+        className="flex items-center gap-2 px-4 py-2 glass-purple border-2 border-purple-300/50 rounded-full hover:border-purple-400 transition-all duration-300 hover:shadow-lg"
       >
         <User size={20} />
         <span className="font-medium">

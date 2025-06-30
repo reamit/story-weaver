@@ -10,6 +10,7 @@ import Link from 'next/link';
 import ProfileSelector from './components/ProfileSelector';
 import { ChildProfile } from './hooks/useChildProfiles';
 import Logo from './components/Logo';
+import MagicalBackground from './components/MagicalBackground';
 
 interface Story {
   title: string;
@@ -126,14 +127,16 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-teal-50 via-white to-rose-50 p-4 flex items-center justify-center">
-      <div className="max-w-6xl w-full bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-white/50">
+    <main className="min-h-screen gradient-sky relative overflow-hidden p-4 flex items-center justify-center">
+      <MagicalBackground />
+      
+      <div className="max-w-6xl w-full glass-purple rounded-3xl p-10 shadow-dreamy relative z-10 animate-fadeIn">
         {/* Merged: Logo from HEAD + StoryWeaver title from master */}
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-4">
             <Logo />
-            <h1 className="text-6xl font-display gradient-text">
-              StoryWeaver
+            <h1 className="text-6xl font-display gradient-text animate-magicalGlow rounded-full p-2">
+              ✨ StoryWeaver ✨
             </h1>
           </div>
           {/* Merged: Conditional login/dashboard link from HEAD */}
@@ -142,14 +145,14 @@ export default function Home() {
               href="/dashboard" 
               className="btn btn-secondary"
             >
-              Parent Dashboard →
+              🎆 Parent Dashboard
             </Link>
           ) : (
             <Link 
               href="/login" 
               className="btn btn-secondary"
             >
-              Parent Login →
+              🎆 Parent Login
             </Link>
           )}
         </div>
@@ -177,17 +180,17 @@ export default function Home() {
               </div>
               
               <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <span className="text-gray-600 font-medium">Include AI-generated images</span>
+                <div className="flex items-center gap-3 glass-purple px-4 py-2 rounded-full">
+                  <span className="text-purple-700 font-medium">🎨 Include magical images</span>
                   <button
                     onClick={() => setIncludeImages(!includeImages)}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-all duration-300 ${
-                      includeImages ? 'bg-teal-600' : 'bg-gray-300'
+                    className={`relative inline-flex h-7 w-14 items-center rounded-full transition-all duration-300 ${
+                      includeImages ? 'bg-gradient-to-r from-purple-500 to-pink-500' : 'bg-gray-300'
                     }`}
                   >
                     <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-all duration-300 shadow-sm ${
-                        includeImages ? 'translate-x-6' : 'translate-x-1'
+                      className={`inline-block h-5 w-5 transform rounded-full bg-white transition-all duration-300 shadow-lg ${
+                        includeImages ? 'translate-x-7' : 'translate-x-1'
                       }`}
                     />
                   </button>
@@ -196,16 +199,18 @@ export default function Home() {
                 <button
                   onClick={generateStory}
                   disabled={!character || !genre}
-                  className="btn btn-primary px-8 py-3 text-lg font-semibold rounded-xl gradient-primary"
+                  className="btn btn-primary px-10 py-4 text-lg font-bold"
                 >
-                  Generate Story
+                  ✨ Create Magical Story ✨
                 </button>
               </div>
             </div>
 
             {error && (
-              <div className="mt-4 p-4 bg-red-50 border border-red-200 text-red-700 rounded-lg animate-fadeIn">
+              <div className="mt-6 p-6 glass-purple border-2 border-pink-300/50 text-purple-700 rounded-2xl animate-scaleIn text-center font-medium">
+                <span className="text-2xl mr-2">✨</span>
                 {error}
+                <span className="text-2xl ml-2">✨</span>
               </div>
             )}
           </>

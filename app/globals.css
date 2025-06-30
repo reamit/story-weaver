@@ -3,24 +3,28 @@
 @tailwind utilities;
 
 :root {
-  /* Color Palette - Modern & Classy */
-  --primary: 88 75% 55%;           /* Soft teal */
-  --primary-dark: 88 75% 45%;      /* Darker teal */
-  --primary-light: 88 75% 95%;     /* Light teal */
-  --secondary: 340 65% 60%;        /* Soft coral */
-  --secondary-light: 340 65% 95%;  /* Light coral */
-  --accent: 45 90% 55%;            /* Golden yellow */
-  --accent-light: 45 90% 90%;      /* Light yellow */
+  /* Color Palette - Dreamy & Magical */
+  --primary: 280 68% 60%;           /* Soft purple */
+  --primary-dark: 280 70% 50%;      /* Darker purple */
+  --primary-light: 280 68% 95%;     /* Light purple */
+  --secondary: 218 91% 60%;         /* Sky blue */
+  --secondary-light: 218 91% 95%;   /* Light sky blue */
+  --accent: 45 100% 65%;            /* Magical gold */
+  --accent-light: 45 100% 90%;      /* Light gold */
+  --pink: 330 80% 65%;              /* Fairy pink */
+  --pink-light: 330 80% 95%;        /* Light fairy pink */
+  --mint: 160 60% 65%;              /* Mint green */
+  --mint-light: 160 60% 95%;        /* Light mint */
   
   /* Neutral Colors */
-  --background: 0 0% 98%;          /* Off-white */
-  --surface: 0 0% 100%;            /* Pure white */
-  --surface-elevated: 0 0% 100%;   /* Elevated surface */
-  --foreground: 220 20% 10%;       /* Almost black */
-  --muted: 220 10% 40%;            /* Muted text */
-  --muted-light: 220 10% 60%;      /* Light muted */
-  --border: 220 10% 90%;           /* Border color */
-  --border-light: 220 10% 95%;     /* Light border */
+  --background: 250 100% 98%;       /* Dreamy white with purple tint */
+  --surface: 0 0% 100%;             /* Pure white */
+  --surface-elevated: 0 0% 100%;    /* Elevated surface */
+  --foreground: 220 20% 20%;        /* Soft dark */
+  --muted: 220 10% 45%;             /* Muted text */
+  --muted-light: 220 10% 65%;       /* Light muted */
+  --border: 280 20% 90%;            /* Purple-tinted border */
+  --border-light: 280 20% 95%;      /* Light purple border */
   
   /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
@@ -95,25 +99,47 @@ h4 {
   font-weight: 500;
 }
 
-/* Buttons - Modern Style */
+/* Buttons - Dreamy Style */
 .btn {
-  @apply inline-flex items-center justify-center font-medium transition-all duration-200;
+  @apply inline-flex items-center justify-center font-medium transition-all duration-300;
   @apply focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
-  @apply px-4 py-2 text-sm rounded-lg;
+  @apply px-6 py-3 text-sm rounded-full relative overflow-hidden;
+  transform-style: preserve-3d;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn:hover::before {
+  left: 100%;
 }
 
 .btn-primary {
-  @apply bg-teal-600 text-white hover:bg-teal-700 focus:ring-teal-500;
-  @apply shadow-sm hover:shadow-md active:shadow-sm;
+  @apply bg-gradient-to-r from-purple-500 to-pink-500 text-white;
+  @apply shadow-lg hover:shadow-xl;
+  box-shadow: 0 4px 20px rgba(168, 85, 247, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 30px rgba(168, 85, 247, 0.4);
 }
 
 .btn-secondary {
-  @apply bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 focus:ring-gray-500;
-  @apply hover:border-gray-400;
+  @apply glass-purple text-purple-700 border border-purple-300/50;
+  @apply hover:bg-purple-200/60;
 }
 
 .btn-ghost {
-  @apply text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:ring-gray-500;
+  @apply text-purple-600 hover:text-purple-800 hover:bg-purple-100/50;
 }
 
 /* Cards */
@@ -147,6 +173,54 @@ h4 {
   }
   50% {
     transform: translateY(-20px) rotate(10deg);
+  }
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes cloudDrift {
+  from {
+    transform: translateX(-100px);
+  }
+  to {
+    transform: translateX(100vw);
+  }
+}
+
+@keyframes rainbow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes magicalGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.4),
+                0 0 40px rgba(168, 85, 247, 0.2),
+                0 0 60px rgba(168, 85, 247, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(168, 85, 247, 0.6),
+                0 0 60px rgba(168, 85, 247, 0.4),
+                0 0 90px rgba(168, 85, 247, 0.2);
+  }
+}
+
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
   }
 }
 
@@ -227,12 +301,57 @@ h4 {
     background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
   }
   
+  .gradient-dreamy {
+    background: linear-gradient(135deg, #E0AAFF 0%, #C77DFF 25%, #9D4EDD 50%, #7B2CBF 75%, #5A189A 100%);
+  }
+  
+  .gradient-magical {
+    background: linear-gradient(135deg, #FFEAA7 0%, #FAB1A0 25%, #FD79A8 50%, #A29BFE 75%, #6C5CE7 100%);
+    background-size: 300% 300%;
+    animation: rainbow 8s ease infinite;
+  }
+  
+  .gradient-sky {
+    background: linear-gradient(to bottom, #87CEEB 0%, #E0F6FF 50%, #FFE5F1 100%);
+  }
+  
   .glass {
-    @apply bg-white/80 backdrop-blur-md border border-white/20;
+    @apply bg-white/60 backdrop-blur-xl border border-white/30;
+    box-shadow: 0 8px 32px 0 rgba(168, 85, 247, 0.1);
+  }
+  
+  .glass-purple {
+    @apply bg-purple-100/60 backdrop-blur-xl border border-purple-200/30;
+    box-shadow: 0 8px 32px 0 rgba(168, 85, 247, 0.15);
   }
   
   .shadow-glow {
-    box-shadow: 0 0 20px rgba(78, 205, 196, 0.3);
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+  }
+  
+  .shadow-dreamy {
+    box-shadow: 0 4px 20px rgba(168, 85, 247, 0.15),
+                0 8px 40px rgba(168, 85, 247, 0.1);
+  }
+  
+  .animate-twinkle {
+    animation: twinkle 3s ease-in-out infinite;
+  }
+  
+  .animate-sparkle {
+    animation: sparkle 2s ease-in-out infinite;
+  }
+  
+  .animate-cloudDrift {
+    animation: cloudDrift 60s linear infinite;
+  }
+  
+  .animate-magicalGlow {
+    animation: magicalGlow 3s ease-in-out infinite;
+  }
+  
+  .cloud-shape {
+    border-radius: 100% 60% 80% 60% / 60% 100% 60% 80%;
   }
 }
 
