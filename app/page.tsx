@@ -133,9 +133,9 @@ export default function Home() {
       <div className="max-w-6xl w-full glass-purple rounded-3xl p-10 shadow-dreamy relative z-10 animate-fadeIn">
         {/* Merged: Logo from HEAD + StoryWeaver title from master */}
         <div className="flex justify-between items-center mb-8">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-6">
             <Logo />
-            <h1 className="text-6xl font-display gradient-text animate-magicalGlow rounded-full p-2">
+            <h1 className="text-5xl font-display text-purple-800 drop-shadow-lg">
               ✨ StoryWeaver ✨
             </h1>
           </div>
