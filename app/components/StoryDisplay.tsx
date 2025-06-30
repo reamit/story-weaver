@@ -67,7 +67,7 @@ export default function StoryDisplay({ story, onNewStory }: StoryDisplayProps) {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h2 className="text-4xl font-serif font-bold text-center mb-8 gradient-text">
+      <h2 className="text-4xl font-serif font-bold text-center mb-8 text-purple-800 drop-shadow-lg">
         {story.title}
       </h2>
 
