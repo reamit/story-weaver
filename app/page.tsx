@@ -9,7 +9,7 @@ import EnhancedLoadingState from './components/EnhancedLoadingState';
 import Link from 'next/link';
 import ProfileSelector from './components/ProfileSelector';
 import { ChildProfile } from './hooks/useChildProfiles';
-import Logo from './components/Logo';
+// import Logo from './components/Logo';
 import MagicalBackground from './components/MagicalBackground';
 
 interface Story {
@@ -134,9 +134,9 @@ export default function Home() {
         {/* Merged: Logo from HEAD + StoryWeaver title from master */}
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-6">
-            <Logo />
-            <h1 className="text-5xl font-display text-purple-800 drop-shadow-lg">
-              ✨ StoryWeaver ✨
+            {/* <Logo /> */}
+            <h1 className="text-6xl font-display font-normal text-purple-800">
+              StoryWeaver
             </h1>
           </div>
           {/* Merged: Conditional login/dashboard link from HEAD */}

@@ -85,9 +85,9 @@ export default function CharacterSelector({ selectedCharacter, onCharacterSelect
           >
             <button
               onClick={() => onCharacterSelect(char.id)}
-              className="w-full h-full flex flex-col items-center justify-center p-4"
+              className="w-full h-full flex flex-col items-center justify-center"
             >
-              <div className="w-[10rem] h-[10rem] mb-3 relative">
+              <div className="w-[10rem] h-[14rem] mb-3 relative">
                 <Image
                   src={char.image}
                   alt={char.name}
